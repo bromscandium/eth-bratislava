@@ -1,205 +1,137 @@
 @use '../../styles/variables' as *;
 
-.marketplace-outer {
-    min-height: 100vh;
-    padding-top: 3.5rem;
-    padding-bottom: 3.5rem;
-    background: inherit;
+.filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    align-items: stretch; // щоб діти тягнулися по висоті
+
+    // всі прямі діти .filters (search, slider, selects) мають спільні налаштування
+    > * {
+        flex: 1; // рівномірно ділять ширину
+        display: flex;
+        align-items: center; // вирівнюють контент по центру по вертикалі
+        padding: 0.5rem 1rem;
+        background: rgba(243, 242, 245, 0.05);
+        border: 1px solid rgba(243, 242, 245, 0.1);
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: $white;
+        box-sizing: border-box;
+        min-height: 3.5rem; // фіксована мінімальна висота всіх фільтрів
+    }
 }
 
-.price-range-values {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 4px;
-    font-size: 1.08rem;
-    color: #d4cfff;
-    width: 100%;
-    font-weight: 600;
+// shared control look
+.search-filter,
+.price-slider,
+.dropdown-select {
+    background: rgba(243, 242, 245, 0.05);
+    border: 1px solid rgba(243, 242, 245, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    color: $white;
+    font-size: 0.9rem;
 }
-.rc-slider {
-    margin-top: 0.6em;
-    margin-bottom: 0.3em;
+
+.search-filter {
+    flex: 2; // пошук займає удвічі більше місця
+    svg {
+        width: 1.4rem;
+        height: 1.4rem;
+        margin-right: 0.75rem;
+        stroke: $gray;
+    }
+
+    input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: $white;
+        font-size: 1rem;
+
+        &:focus {
+            outline: none;
+        }
+
+        &::placeholder {
+            color: $gray;
+        }
+    }
+}
+
+// price-slider трохи менше "висить" зверху/знизу
+.price-slider {
+    flex: 2; // слайдер трохи ширший
+    flex-direction: column;
+    justify-content: center;
+
+    label {
+        margin: 0 0 0.25rem;
+        font-size: 0.9rem;
+        color: $gray;
+    }
+
+    .rc-slider {
+        flex: 1;
+        margin: 0 0.5rem;
+    }
+
+    .rc-slider-track {
+        background-color: $secondary;
+    }
+
+
+    .slider-values {
+        font-size: 0.8rem;
+        color: $gray;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 0.25rem;
+    }
+}
+
+.dropdown-select {
+    appearance: none;
+    flex: 1;
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    background: rgba(243, 242, 245, 0.05) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpolyline points='1 1 6 6 11 1' stroke='%23fff' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 1rem center;
+    background-size: 12px 8px;
+    border: none; // убираем рамку у селекта
+    border-radius: 8px;
+    color: $white;
+    font-size: 0.9rem;
+    cursor: pointer;
+
+    option {
+        font-family: $font-family;
+        background-color: #1b1724;
+        color: $white;
+        border: none; // убираем рамку у опции (насколько возможно)
+        padding: 0.5rem 1rem;
+
+
+    }
 }
 
 
 .marketplace-info {
     text-align: center;
-    margin-bottom: 2.8rem;
-    margin-top: 0.5rem;
+    margin-top: 50px;
+    margin-bottom: 60px;
 
     h2 {
-        font-size: 2.6rem;
-        color: $secondary;
+        font-size: 40px;
         font-weight: 700;
-        margin-bottom: 0.42em;
-        text-shadow: 0 0 10px rgba(168, 85, 247, 0.18);
+        margin-bottom: 16px;
     }
 
-    .marketplace-description, p {
-        color: $white;
-        font-size: 1.28rem;
-        max-width: 1100px;
+    .marketplace-description {
+        font-size: 18px;
+        color: $gray;
+        max-width: 600px;
         margin: 0 auto;
-        line-height: 1.65;
-        font-weight: 500;
-    }
-}
-.marketplace-layout {
-    display: flex;
-    gap: 2.2rem;
-    align-items: flex-start;
-    min-height: 100vh;
-    padding: 3rem 2rem 3rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-}
-
-.marketplace-filters {
-    flex: 0 0 260px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    background: rgba(30, 24, 46, 0.95);
-    border-radius: 18px;
-    padding: 1.8rem 1.9rem 1.3rem 2.5rem;
-    box-shadow: 0 4px 22px rgba(90, 58, 207, 0.09);
-    min-width: 200px;
-    max-width: 320px;
-    margin: 0;
-
-    .filters-inner {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .filters-title,
-    .filters-title-lg {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #a259ff;
-        letter-spacing: 0.04em;
-        text-align: left;
-
-    }
-
-    .filter-block {
-        margin-bottom: 0.8rem;
-
-        .filter-label,
-        .filter-label-lg {
-            color: $white;
-            font-size: 1.24rem;
-            font-weight: 700;
-            margin-bottom: 0.77em;
-            letter-spacing: 0.01em;
-            padding-left: 0.1em;
-        }
-    }
-
-    .filter-row {
-        display: flex;
-        flex-direction: column;
-        gap: 0.55rem;
-        align-items: flex-start;
     }
 }
 
-.price-range-input {
-    width: 68px;
-    padding: 0.3em 0.8em;
-    border-radius: 8px;
-    border: 1.5px solid #a259ff;
-    background: transparent;
-    color: #d4cfff;
-    font-size: 1.04rem;
-    outline: none;
-    margin-right: 0.2em;
-
-    &::placeholder {
-        color: #a259ff99;
-        opacity: 1;
-    }
-    &:focus {
-        border-color: #d4cfff;
-        background: #312164;
-    }
-}
-
-.custom-radio {
-    position: relative;
-    padding-left: 2em;
-    margin-bottom: 0.2em;
-    cursor: pointer;
-    font-size: 1.08rem;
-    color: #a259ff;
-    user-select: none;
-    display: flex;
-    align-items: flex-start;
-    font-weight: 600;
-
-    input[type="radio"] {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 0;
-        width: 0;
-    }
-
-    .checkmark {
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        height: 1.05em;
-        width: 1.05em;
-        background-color: transparent;
-        border: 2px solid #fff;
-        border-radius: 8px;
-        transition: background 0.18s, border 0.18s, box-shadow 0.17s;
-    }
-
-    &:hover .checkmark {
-        border-color: #a259ff;
-        box-shadow: 0 0 8px 1px #a259ff55;
-    }
-
-    input[type="radio"]:checked ~ .checkmark {
-        background-color: #a259ff;
-        border-color: #a259ff;
-        box-shadow: 0 0 16px 0 #a259ff55;
-    }
-
-    .checkmark:after {
-        display: none !important;
-    }
-}
-
-.marketplace-main {
-    flex: 1 1 0;
-    min-width: 0;
-
-    .section-header {
-        text-align: center;
-        margin-bottom: 2.1rem;
-        margin-top: 0.6rem;
-
-        h2 {
-            font-size: 2.1rem;
-            font-weight: 800;
-            color: #a259ff;
-            margin-bottom: 0.28em;
-            text-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
-        }
-
-        p {
-            color: #d4cfff;
-            font-size: 1.13rem;
-            margin: 0 auto;
-            max-width: 640px;
-            line-height: 1.5;
-        }
-    }
-}

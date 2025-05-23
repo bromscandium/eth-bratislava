@@ -88,8 +88,8 @@ const Home = () => {
                     <h1>Decentralized <span>Estate</span> Trading</h1>
                     <p>Buy, sell, and auction properties directly using NFT technology. Powered by Ethereum blockchain in compliant jurisdictions.</p>
                     <div className="cta-buttons">
-                        <Link to="/marketplace" className="primary-button">Explore Properties</Link>
-                        <Link to="/how-it-works" className="secondary-button">How It Works</Link>
+                        <Link to="/marketplace" className="primary1-button">Explore Properties</Link>
+                        <Link to="/how-it-works" className="secondary1-button">How It Works</Link>
                     </div>
                     <div className="ethereum-badge">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

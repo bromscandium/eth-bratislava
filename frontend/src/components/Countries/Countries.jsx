@@ -39,7 +39,7 @@ const Countries = () => {
                                 <h3>{country.name}</h3>
                                 <p>{country.description}</p>
                                 <button
-                                    className="secondary-button"
+                                    className="country-button"
                                     onClick={() => handleViewProperties(country.countryKey)}
                                 >
                                     View {country.name.split(',')[0]} Properties

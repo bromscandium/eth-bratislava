@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './HowItWorks.scss';
 
@@ -32,7 +32,41 @@ const steps = [
     }
 ];
 
+const StepCard = ({ icon, title, description }) => {
+    const ref = useRef(null);
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => setVisible(entry.isIntersecting),
+            { threshold: 0.4 }
+        );
+        if (ref.current) observer.observe(ref.current);
+        return () => observer.disconnect();
+    }, []);
+
+    return (
+        <div ref={ref} className={`step-card ${visible ? 'visible' : ''}`}>
+            <div className="icon">{icon}</div>
+            <h3>{title}</h3>
+            <p>{description}</p>
+        </div>
+    );
+};
+
 const HowItWorks = () => {
+    const interestedRef = useRef(null);
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => setVisible(entry.isIntersecting),
+            { threshold: 0.4 }
+        );
+        if (interestedRef.current) observer.observe(interestedRef.current);
+        return () => observer.disconnect();
+    }, []);
+
     return (
         <section className="how-it-works">
             <div className="container">
@@ -43,22 +77,27 @@ const HowItWorks = () => {
 
                 <div className="steps">
                     {steps.map((step, index) => (
-                        <div className="step-card" key={index}>
-                            <div className="icon">{step.icon}</div>
-                            <h3>{step.title}</h3>
-                            <p>{step.description}</p>
-                        </div>
+                        <StepCard
+                            key={index}
+                            icon={step.icon}
+                            title={step.title}
+                            description={step.description}
+                        />
                     ))}
-                </div>
 
-                <div className="call-to-action">
-                    <h3>Interested?</h3>
-                    <p>Create your account and connect your wallet to get started today. No middlemen. Full control. Global access.</p>
-                    <Link to="/register" className="primary-button">Register & Connect Wallet</Link>
+                    <div ref={interestedRef} className={`call-to-action ${visible ? 'visible' : ''}`}>
+                        <div className="cta-heading">
+                            <h3>Interested?</h3>
+                        </div>
+                        <p>Create your account and connect your wallet to get started today. No middlemen. Full control. Global access.</p>
+                        <Link to="/register" className="cta-button">Register & Connect Wallet</Link>
+                    </div>
+
                 </div>
             </div>
         </section>
     );
 };
+
 
 export default HowItWorks;

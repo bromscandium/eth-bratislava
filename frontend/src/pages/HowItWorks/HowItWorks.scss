@@ -1,45 +1,64 @@
-@use '../../styles/variables' as *;
-@use "sass:color";
+    @use '../../styles/variables' as *;
+    @use "sass:color";
 
-.how-it-works {
-    padding: 5rem 2rem;
-    background: color.adjust($primary, $lightness: -2%);
-    color: $white;
-    text-align: center;
+    .how-it-works {
+        padding: 5rem 2rem;
+        background: color.adjust($primary, $lightness: -2%);
+        color: $white;
+        text-align: center;
 
-    h2 {
-        font-size: 2.5rem;
-        color: $secondary;
-        margin-bottom: 1rem;
-        text-shadow: 0 0 10px rgba($secondary, 0.2);
-    }
+        h2 {
+            font-size: 2.5rem;
+            color: $secondary;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba($secondary, 0.2);
+        }
 
-    .intro-text {
-        font-size: 1rem;
-        color: $gray;
-        max-width: 600px;
-        margin: 0 auto 3rem;
-    }
+        .intro-text {
+            font-size: 1rem;
+            color: $gray;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
 
-    .steps {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 2rem;
-        justify-items: center;
+        .steps {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
 
         .step-card {
+            width: 100%;
+            max-width: 1200px;
+            height: 35vh;
+            margin-bottom: 30px;
+
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            padding: 4rem 2rem;
+            box-sizing: border-box;
+
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba($secondary, 0.1);
             border-radius: 1rem;
-            padding: 2rem;
-            width: 100%;
-            max-width: 320px;
-            @include hover-effect;
+
+            &.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
 
             .icon {
-                width: 48px;
-                height: 48px;
-                margin: 0 auto 1rem;
+                margin-bottom: 2rem;
+                width: 64px;
+                height: 64px;
                 color: $secondary;
 
                 svg {
@@ -49,56 +68,106 @@
             }
 
             h3 {
+                font-size: 2rem;
                 color: $white;
-                font-size: 1.2rem;
-                margin-bottom: 0.5rem;
+                margin-bottom: 1rem;
             }
 
             p {
-                font-size: 0.95rem;
+                font-size: 1.2rem;
                 color: $gray;
+                max-width: 700px;
+                text-align: center;
             }
         }
-    }
 
-    .call-to-action {
-        margin-top: 4rem;
-        padding: 2rem;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba($secondary, 0.1);
-        border-radius: 1rem;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-        box-shadow: 0 0 20px rgba($secondary, 0.05);
+        .call-to-action {
+            width: 100%;
+            max-width: 1200px;
+            height: 35vh;
+            margin-bottom: 30px;
+            padding: 4rem 2rem;
+            box-sizing: border-box;
 
-        h3 {
-            font-size: 1.8rem;
-            color: $secondary;
-            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba($secondary, 0.1);
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba($secondary, 0.05);
+
+            &.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .cta-heading {
+                h3 {
+                    font-size: 2rem;
+                    color: $secondary; // ярко-зелёный
+                    margin-bottom: 1rem;
+                    letter-spacing: 1px;
+                }
+            }
+
+            p {
+                color: $gray;
+                font-size: 1.2rem;
+                max-width: 700px;
+                text-align: center;
+                margin-bottom: 1.5rem;
+            }
+
+            .primary-button {
+
+                border: 1px solid #a855f7;
+                background: transparent;
+                color: #a855f7;
+                border-radius: 10px;
+                font-size: 0.95rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    background: #a855f7;
+                    color: #fff;
+                    box-shadow: 0 0 10px #a855f7;
+                }
+            }
+
+
         }
 
-        p {
-            color: $gray;
-            margin-bottom: 1.5rem;
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-
-        .primary-button {
+        .cta-button {
             display: inline-block;
             padding: 0.75rem 1.5rem;
-            background: $secondary;
-            color: $white;
-            font-weight: 600;
-            border: none;
-            border-radius: 0.5rem;
             font-size: 1rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            border: 1px solid $secondary;
+            background: #0F0712;
+            color: $white;
             text-decoration: none;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
 
             &:hover {
-                background: color.adjust($secondary, $lightness: 10%);
+                background: $secondary;
                 color: #0f0f0f;
+                box-shadow: 0 0 10px rgba($secondary, 0.4);
             }
         }
+
     }
-}
