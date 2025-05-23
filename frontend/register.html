@@ -1,102 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-        .error {
-            color: red;
-            margin-top: 5px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0F0712;
+      --secondary: #B96BFC;
+      --white: #F3F2F5;
+      --gray: #C2C2C2;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--primary);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .form-container {
+      background: rgba(243, 242, 245, 0.03);
+      border: 1px solid rgba(243, 242, 245, 0.05);
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      background: rgba(243, 242, 245, 0.05);
+      border: 1px solid rgba(243, 242, 245, 0.1);
+      border-radius: 8px;
+      color: var(--white);
+    }
+
+    input::placeholder {
+      color: var(--gray);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--secondary);
+      color: var(--primary);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 16px;
+      color: var(--gray);
+    }
+
+    a {
+      color: var(--secondary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
+  <div class="form-container">
     <h2>Register</h2>
     <form id="registerForm">
-        <div class="form-group">
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" required>
-        </div>
-        <div class="form-group">
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password (min 8 characters):</label>
-            <input type="password" id="password" minlength="8" required>
-        </div>
-        <button type="submit">Register</button>
-        <div id="error" class="error"></div>
+      <div class="form-group">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" required placeholder="John">
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" required placeholder="Doe">
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" required placeholder="email@example.com">
+      </div>
+      <div class="form-group">
+        <label for="password">Password (min 8 characters):</label>
+        <input type="password" id="password" minlength="8" required placeholder="********">
+      </div>
+      <button type="submit">Register</button>
+      <div id="error" class="error"></div>
     </form>
     <p>Already have an account? <a href="/login">Login here</a></p>
+  </div>
 
-    <script>
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
 
-            const formData = {
-                first_name: document.getElementById('firstName').value,
-                last_name: document.getElementById('lastName').value,
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value
-            };
+      const formData = {
+        first_name: document.getElementById('firstName').value,
+        last_name: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+      };
 
-            const errorElement = document.getElementById('error');
+      const errorElement = document.getElementById('error');
 
-            try {
-                const response = await fetch('/api/auth/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams(formData)
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.detail || 'Registration failed');
-                }
-
-                alert('Registration successful! Please login.');
-                window.location.href = '/login';
-
-            } catch (error) {
-                errorElement.textContent = error.message;
-                console.error('Registration error:', error);
-            }
+      try {
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams(formData)
         });
-    </script>
+
+        const data = await response.json();
+
+        if (!response.ok) throw new Error(data.detail || 'Registration failed');
+
+        alert('Registration successful! Please login.');
+        window.location.href = '/login';
+      } catch (error) {
+        errorElement.textContent = error.message;
+      }
+    });
+  </script>
 </body>
 </html>
