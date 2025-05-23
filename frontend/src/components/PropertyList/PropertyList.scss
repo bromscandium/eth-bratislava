@@ -1,0 +1,113 @@
+.properties {
+    padding: 4rem 0;
+
+    color: #fff;
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+
+        h2 {
+            font-size: 2.4rem;
+            margin-bottom: 0.5rem;
+            color: #a855f7;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+        }
+
+        p {
+            color: #aaa;
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    }
+
+    .properties-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 0 1rem;
+    }
+
+    .property-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(168, 85, 247, 0.12);
+        border-radius: 1.2rem;
+        overflow: hidden;
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.03);
+
+        &:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 0 24px rgba(168, 85, 247, 0.25);
+        }
+
+        .property-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .property-details {
+            padding: 1.5rem;
+
+            .property-meta {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 0.8rem;
+
+                .hashtag {
+                    font-size: 0.75rem;
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    color: #a855f7;
+
+                    &.auction {
+                        color: #f472b6;
+                    }
+
+                    &.trade {
+                        color: #38bdf8;
+                    }
+                }
+
+                .price {
+                    font-weight: 600;
+                    color: #facc15;
+                }
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 0.5rem 0;
+                color: #fff;
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.05);
+            }
+
+            p {
+                font-size: 0.95rem;
+                color: #bbb;
+                margin-bottom: 1.2rem;
+                line-height: 1.4;
+            }
+
+            .secondary-button {
+                padding: 0.65rem 1.3rem;
+                border: 1px solid #a855f7;
+                background: transparent;
+                color: #a855f7;
+                border-radius: 10px;
+                font-size: 0.95rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    background: #a855f7;
+                    color: #fff;
+                    box-shadow: 0 0 10px #a855f7;
+                }
+            }
+        }
+    }
+}

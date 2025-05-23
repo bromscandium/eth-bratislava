@@ -1,91 +1,93 @@
 @use '../../styles/variables' as *;
-.site-header {
-    background-color: #000;
-    border-bottom: 1px solid rgba(128, 90, 213, 0.3); // фиолетовая обводка
-    color: #f5f5f5;
-    padding: 1rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(243, 242, 245, 0.1);
+    position: relative;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: $white;
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        color: $secondary;
     }
 
-    .logo-link {
-        font-size: 1.8rem;
-        font-weight: 800;
+    span {
+        color: $secondary;
+        margin-left: 4px;
+    }
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 32px;
+
+    li a {
+        color: $gray;
         text-decoration: none;
-
-        .white {
-            color: #ffffff;
-        }
-
-        .purple {
-            color: #a855f7; // твой фирменный фиолетовый
-        }
-
-        &:hover .purple {
-            text-shadow: 0 0 6px #ffffff;
-        }
-    }
-
-
-    .nav-links {
-        display: flex;
-        gap: 2rem;
-
-        a {
-            position: relative;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #aaa;
-            text-decoration: none;
-            transition: all 0.3s ease;
-
-            &::after {
-                content: '';
-                position: absolute;
-                bottom: -6px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 0;
-                height: 2px;
-                background-color: #a855f7;
-                border-radius: 1px;
-                transition: width 0.3s ease;
-            }
-
-            &:hover,
-            &.active {
-                color: #a855f7;
-
-                &::after {
-                    width: 60%;
-                }
-            }
-        }
-    }
-
-    .wallet-button button {
-        background: linear-gradient(135deg, #7c3aed, #a855f7);
-        border: none;
-        padding: 0.6rem 1.2rem;
-        border-radius: 12px;
-        color: white;
-        font-weight: 600;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: 0.3s ease;
+        font-weight: 500;
+        transition: all 0.2s;
+        position: relative;
+        padding: 8px 0;
 
         &:hover {
-            opacity: 0.85;
-            box-shadow: 0 0 8px #a855f7;
+            color: $white;
         }
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: $secondary;
+            transition: width 0.3s;
+        }
+
+        &:hover::after {
+            width: 100%;
+        }
+
+        &.active {
+            color: $white;
+
+            &::after {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.login-button {
+    background-color: transparent;
+    color: $white;
+    border: 1px solid $secondary;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+        background-color: $secondary;
+        color: $primary;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        display: none;
     }
 }

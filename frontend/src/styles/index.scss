@@ -1,10 +1,73 @@
 @use './variables' as *;
 
-
-body {
+* {
     margin: 0;
     padding: 0;
-    background-color: $color-black;
-    color: $color-white;
-    font-family: "Plus Jakarta Sans", sans-serif;
+    box-sizing: border-box;
+    font-family: $font-family;
+}
+
+body {
+    background-color: $primary;
+    color: $white;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+
+    h2 {
+        font-size: 40px;
+        font-weight: 700;
+        margin-bottom: 16px;
+    }
+
+    p {
+        font-size: 18px;
+        color: $gray;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+
+.primary-button {
+    background-color: $secondary;
+    color: $primary;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s;
+    border: 1px solid transparent;
+
+    &:hover {
+        background-color: transparent;
+        color: $secondary;
+        border-color: $secondary;
+    }
+}
+
+.secondary-button {
+    background-color: transparent;
+    color: $white;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid $gray;
+    transition: all 0.3s;
+
+    &:hover {
+        border-color: $secondary;
+        color: $secondary;
+    }
 }

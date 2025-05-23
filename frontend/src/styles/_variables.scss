@@ -1,4 +1,20 @@
-$color-black: #0F0712;
-$color-gray:  #C2C2C2;
-$color-white: #F3F2F5;
-$color-accent: #B96BFC;
+$primary: #0F0712;
+$secondary: #B96BFC;
+$white: #F3F2F5;
+$gray: #C2C2C2;
+$dark-purple: #7E4BC3;
+
+$font-family: 'Plus Jakarta Sans', sans-serif;
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin hover-effect {
+    transition: all 0.3s ease;
+    &:hover {
+        transform: translateY(-3px);
+    }
+}

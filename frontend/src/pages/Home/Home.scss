@@ -1,1 +1,63 @@
 @use '../../styles/variables' as *;
+
+.home-intro {
+    padding: 4rem 2rem;
+    background: $primary;
+    color: $white;
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+
+        h2 {
+            font-size: 2.5rem;
+            color: $secondary;
+            text-shadow: 0 0 10px rgba($secondary, 0.3);
+        }
+
+        p {
+            color: $gray;
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1rem;
+        }
+    }
+
+    .feature-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 2rem;
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba($secondary, 0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            @include hover-effect;
+
+            .icon {
+                width: 48px;
+                height: 48px;
+                margin: 0 auto 1rem;
+                color: $secondary;
+
+                svg {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            h3 {
+                font-size: 1.2rem;
+                color: $white;
+                margin-bottom: 0.5rem;
+            }
+
+            p {
+                font-size: 0.95rem;
+                color: $gray;
+            }
+        }
+    }
+}
