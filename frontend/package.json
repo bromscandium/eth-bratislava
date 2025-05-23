@@ -19,7 +19,7 @@
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.0"
   },
-  "name": "renft",
+  "name": "tenft",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
