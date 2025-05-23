@@ -1,16 +1,15 @@
-@use '../../styles/variables' as *;
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 :root {
-    --login-primary: #0F0712;
-    --login-secondary: #B96BFC;
-    --login-white: #F3F2F5;
-    --login-gray: #C2C2C2;
+    --register-primary: #0F0712;
+    --register-secondary: #B96BFC;
+    --register-white: #F3F2F5;
+    --register-gray: #C2C2C2;
 }
 
-.login-container {
-    background-color: var(--login-primary);
-    color: var(--login-white);
+.register-container {
+    background-color: var(--register-primary);
+    color: var(--register-white);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,25 +18,25 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-.login-box {
+.register-box {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 16px;
     padding: 3rem 2rem;
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
-.login-title {
+.register-title {
     text-align: center;
     font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 2rem;
-    color: var(--login-white);
+    color: var(--register-white);
 }
 
-.login-form-group {
+.register-form-group {
     margin-bottom: 1.5rem;
 
     label {
@@ -53,20 +52,20 @@
         background-color: rgba(255, 255, 255, 0.04);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 8px;
-        color: var(--login-white);
+        color: var(--register-white);
         font-size: 0.95rem;
 
         &::placeholder {
-            color: var(--login-gray);
+            color: var(--register-gray);
         }
     }
 }
 
-.login-submit {
+.register-submit {
     width: 100%;
     padding: 0.75rem;
-    background-color: var(--login-secondary);
-    color: var(--login-primary);
+    background-color: var(--register-secondary);
+    color: var(--register-primary);
     border: none;
     border-radius: 8px;
     font-weight: 600;
@@ -79,21 +78,21 @@
     }
 }
 
-.login-error {
+.register-error {
     color: #ff4d4f;
     margin-top: 1rem;
     text-align: center;
     font-size: 0.9rem;
 }
 
-.login-footer-text {
+.register-footer-text {
     margin-top: 1.5rem;
     text-align: center;
     font-size: 0.9rem;
-    color: var(--login-gray);
+    color: var(--register-gray);
 
     a {
-        color: var(--login-secondary);
+        color: var(--register-secondary);
         text-decoration: none;
 
         &:hover {

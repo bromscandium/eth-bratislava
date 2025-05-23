@@ -8,11 +8,11 @@ import Trade from './pages/Trade/Trade';
 import ResultBuying from './pages/ResultBuying/ResultBuying';
 import WalletConnect from './pages/WalletConnect/WalletConnect';
 import Marketplace from "./pages/Marketplace/Marketplace";
-
 import Header from './components/Header/Header';
 import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
 import HowItWorks from "./pages/HowItWorks/HowItWorks";
+import Register from './pages/Register/Register';
 
 function App() {
     return (
@@ -29,6 +29,7 @@ function App() {
                         <Route path="/marketplace/:filter" element={<Marketplace />} />
 
                         <Route path="/login" element={<Login/>}/>
+                        <Route path="/register" element={<Register />} />
                         <Route path="/profile" element={<Profile/>}/>
 
                         <Route path="/auction/:id" element={<Auction />} />
