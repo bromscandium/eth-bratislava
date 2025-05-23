@@ -19,7 +19,7 @@
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.0"
   },
-  "name": "tenft",
+  "name": "dest",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
