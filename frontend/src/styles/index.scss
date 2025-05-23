@@ -1,0 +1,10 @@
+@use './variables' as *;
+
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: $color-black;
+    color: $color-white;
+    font-family: "Plus Jakarta Sans", sans-serif;
+}
