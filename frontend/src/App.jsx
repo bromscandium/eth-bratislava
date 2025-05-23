@@ -9,19 +9,30 @@ import Trade from './pages/Trade/Trade';
 import ResultBuying from './pages/ResultBuying/ResultBuying';
 import WalletConnect from './pages/WalletConnect/WalletConnect';
 
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+
 function App() {
     return (
         <Router>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/auction" element={<Auction />} />
-                <Route path="/trade" element={<Trade />} />
-                <Route path="/result" element={<ResultBuying />} />
-                <Route path="/wallet" element={<WalletConnect />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            <div className="flex flex-col min-h-screen">
+                <Header />
+
+                <main className="flex-grow">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/auction" element={<Auction />} />
+                        <Route path="/trade" element={<Trade />} />
+                        <Route path="/result" element={<ResultBuying />} />
+                        <Route path="/wallet" element={<WalletConnect />} />
+                        <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+                </main>
+
+                <Footer />
+            </div>
         </Router>
     );
 }
