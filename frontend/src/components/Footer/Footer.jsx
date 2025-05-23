@@ -86,7 +86,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="footer-bottom">
-                    <p>&copy; 2023 dEST. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+                    <p>&copy; 2025 dEST. All rights reserved.</p>
                 </div>
             </div>
         </footer>

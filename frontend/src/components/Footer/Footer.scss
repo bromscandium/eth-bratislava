@@ -1,15 +1,19 @@
 @use '../../styles/variables' as *;
 
 footer {
-    padding: 60px 0 30px;
-    border-top: 1px solid rgba(243, 242, 245, 0.1);
     background: rgba(15, 7, 18, 0.95);
-    position: relative;
+    padding: 60px 24px 30px;
+    border-top: 1px solid rgba(243, 242, 245, 0.1);
+
+    .container {
+        max-width: 1280px;
+        margin: 0 auto;
+    }
 }
 
 .footer-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 40px;
     margin-bottom: 40px;
 }
@@ -17,7 +21,8 @@ footer {
 .footer-about {
     p {
         color: $gray;
-        line-height: 1.6;
+        line-height: 1.7;
+        font-size: 0.95rem;
         margin-bottom: 20px;
     }
 }
@@ -27,7 +32,6 @@ footer {
     font-weight: 700;
     color: $white;
     margin-bottom: 20px;
-    display: block;
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -40,36 +44,43 @@ footer {
 
 .social-links {
     display: flex;
-    gap: 16px;
+    gap: 14px;
+    margin-top: 10px;
 
     a {
-        color: $gray;
-        transition: color 0.2s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         width: 36px;
         height: 36px;
         border-radius: 50%;
         background: rgba(243, 242, 245, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $gray;
+        transition: all 0.3s;
 
         &:hover {
             color: $secondary;
-            background: rgba(185, 107, 252, 0.1);
+            background: rgba($secondary, 0.15);
+        }
+
+        svg {
+            width: 20px;
+            height: 20px;
         }
     }
 }
 
 .footer-links {
     h4 {
-        font-size: 18px;
+        font-size: 1.1rem;
         font-weight: 600;
-        margin-bottom: 20px;
         color: $white;
+        margin-bottom: 16px;
     }
 
     ul {
         list-style: none;
+        padding: 0;
 
         li {
             margin-bottom: 12px;
@@ -77,6 +88,7 @@ footer {
             a {
                 color: $gray;
                 text-decoration: none;
+                font-size: 0.95rem;
                 transition: all 0.2s;
 
                 &:hover {
@@ -89,15 +101,16 @@ footer {
 }
 
 .footer-bottom {
-    text-align: center;
-    padding-top: 30px;
     border-top: 1px solid rgba(243, 242, 245, 0.1);
+    padding-top: 30px;
+    text-align: center;
+    font-size: 0.85rem;
     color: $gray;
-    font-size: 14px;
 
     a {
         color: $gray;
         text-decoration: none;
+        margin: 0 8px;
         transition: color 0.2s;
 
         &:hover {
@@ -106,15 +119,16 @@ footer {
     }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
     .footer-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
+        gap: 24px;
     }
-}
 
-@media (max-width: 576px) {
-    .footer-grid {
-        grid-template-columns: 1fr;
+    .footer-logo {
+        font-size: 20px;
+    }
+
+    .social-links {
+        justify-content: flex-start;
     }
 }

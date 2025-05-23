@@ -1,38 +1,205 @@
 @use '../../styles/variables' as *;
 
-.home-page {
-    padding: 2rem;
+.marketplace-outer {
+    min-height: 100vh;
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+    background: inherit;
+}
 
-    .filter-bar {
+.price-range-values {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 1.08rem;
+    color: #d4cfff;
+    width: 100%;
+    font-weight: 600;
+}
+.rc-slider {
+    margin-top: 0.6em;
+    margin-bottom: 0.3em;
+}
+
+
+.marketplace-info {
+    text-align: center;
+    margin-bottom: 2.8rem;
+    margin-top: 0.5rem;
+
+    h2 {
+        font-size: 2.6rem;
+        color: $secondary;
+        font-weight: 700;
+        margin-bottom: 0.42em;
+        text-shadow: 0 0 10px rgba(168, 85, 247, 0.18);
+    }
+
+    .marketplace-description, p {
+        color: $white;
+        font-size: 1.28rem;
+        max-width: 1100px;
+        margin: 0 auto;
+        line-height: 1.65;
+        font-weight: 500;
+    }
+}
+.marketplace-layout {
+    display: flex;
+    gap: 2.2rem;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 3rem 2rem 3rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.marketplace-filters {
+    flex: 0 0 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background: rgba(30, 24, 46, 0.95);
+    border-radius: 18px;
+    padding: 1.8rem 1.9rem 1.3rem 2.5rem;
+    box-shadow: 0 4px 22px rgba(90, 58, 207, 0.09);
+    min-width: 200px;
+    max-width: 320px;
+    margin: 0;
+
+    .filters-inner {
         display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 2rem;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
 
-        label {
-            font-weight: 600;
-            font-size: 1rem;
-            color: $gray;
+    .filters-title,
+    .filters-title-lg {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #a259ff;
+        letter-spacing: 0.04em;
+        text-align: left;
+
+    }
+
+    .filter-block {
+        margin-bottom: 0.8rem;
+
+        .filter-label,
+        .filter-label-lg {
+            color: $white;
+            font-size: 1.24rem;
+            font-weight: 700;
+            margin-bottom: 0.77em;
+            letter-spacing: 0.01em;
+            padding-left: 0.1em;
+        }
+    }
+
+    .filter-row {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+        align-items: flex-start;
+    }
+}
+
+.price-range-input {
+    width: 68px;
+    padding: 0.3em 0.8em;
+    border-radius: 8px;
+    border: 1.5px solid #a259ff;
+    background: transparent;
+    color: #d4cfff;
+    font-size: 1.04rem;
+    outline: none;
+    margin-right: 0.2em;
+
+    &::placeholder {
+        color: #a259ff99;
+        opacity: 1;
+    }
+    &:focus {
+        border-color: #d4cfff;
+        background: #312164;
+    }
+}
+
+.custom-radio {
+    position: relative;
+    padding-left: 2em;
+    margin-bottom: 0.2em;
+    cursor: pointer;
+    font-size: 1.08rem;
+    color: #a259ff;
+    user-select: none;
+    display: flex;
+    align-items: flex-start;
+    font-weight: 600;
+
+    input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    .checkmark {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 1.05em;
+        width: 1.05em;
+        background-color: transparent;
+        border: 2px solid #fff;
+        border-radius: 8px;
+        transition: background 0.18s, border 0.18s, box-shadow 0.17s;
+    }
+
+    &:hover .checkmark {
+        border-color: #a259ff;
+        box-shadow: 0 0 8px 1px #a259ff55;
+    }
+
+    input[type="radio"]:checked ~ .checkmark {
+        background-color: #a259ff;
+        border-color: #a259ff;
+        box-shadow: 0 0 16px 0 #a259ff55;
+    }
+
+    .checkmark:after {
+        display: none !important;
+    }
+}
+
+.marketplace-main {
+    flex: 1 1 0;
+    min-width: 0;
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 2.1rem;
+        margin-top: 0.6rem;
+
+        h2 {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: #a259ff;
+            margin-bottom: 0.28em;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
         }
 
-        select {
-            padding: 0.5rem 1rem;
-            background-color: $primary;
-            color: $white;
-            border: 1px solid rgba($secondary, 0.4);
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-family: $font-family;
-            transition: all 0.3s ease;
-
-            &:hover,
-            &:focus {
-                border-color: $secondary;
-                box-shadow: 0 0 6px rgba($secondary, 0.4);
-                outline: none;
-            }
+        p {
+            color: #d4cfff;
+            font-size: 1.13rem;
+            margin: 0 auto;
+            max-width: 640px;
+            line-height: 1.5;
         }
     }
 }

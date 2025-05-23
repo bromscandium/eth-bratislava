@@ -1,0 +1,56 @@
+@use '../../styles/variables' as *;
+
+
+.countries {
+    padding: 80px 0;
+    background: rgba(15, 7, 18, 0.9);
+    position: relative;
+}
+
+.countries-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.country-card {
+    background: rgba(243, 242, 245, 0.03);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s;
+    border: 1px solid rgba(243, 242, 245, 0.05);
+    @include hover-effect;
+
+    &:hover {
+        border-color: $secondary;
+    }
+}
+
+.country-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+}
+
+.country-details {
+    padding: 24px;
+
+    h3 {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: $white;
+    }
+
+    p {
+        color: $gray;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+}
+
+@media (max-width: 768px) {
+    .countries-grid {
+        grid-template-columns: 1fr;
+    }
+}

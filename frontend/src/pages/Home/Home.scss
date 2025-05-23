@@ -1,4 +1,136 @@
 @use '../../styles/variables' as *;
+@use 'sass:color';
+
+.hero {
+    padding: 6rem 2rem 4rem;
+    background: linear-gradient(145deg, $primary, color.adjust($primary, $lightness: -4%));
+    color: $white;
+    text-align: center;
+
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+
+        span {
+            color: $secondary;
+        }
+    }
+
+    p {
+        font-size: 1.1rem;
+        color: $gray;
+        max-width: 700px;
+        margin: 0 auto 2rem;
+    }
+
+    .stat-number {
+        transform: translateY(20px);
+        opacity: 0;
+        animation: fadeUp 0.8s ease forwards;
+
+        @keyframes fadeUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    }
+
+
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+
+        .primary-button,
+        .secondary-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .primary-button {
+            background: $secondary;
+            color: $white;
+
+            &:hover {
+                background: color.adjust($secondary, $lightness: 10%);
+            }
+
+        }
+
+
+
+        .secondary-button {
+            background: transparent;
+            border: 1px solid $secondary;
+            color: $secondary;
+
+            &:hover {
+                background: rgba($secondary, 0.1);
+            }
+        }
+    }
+
+    .ethereum-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        color: $gray;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    .stat-number {
+        transform: translateY(20px);
+        opacity: 0;
+        animation: fadeUp 0.8s ease forwards;
+
+        @keyframes fadeUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+
+
+    }
+
+
+    .stats {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 2rem;
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 2rem;
+            border-radius: 1rem;
+            border: 1px solid rgba($white, 0.1);
+            text-align: center;
+
+            .stat-number {
+                font-size: 1.8rem;
+                font-weight: bold;
+                color: $white;
+            }
+
+            .stat-label {
+                font-size: 0.9rem;
+                color: $gray;
+            }
+        }
+    }
+}
 
 .home-intro {
     padding: 4rem 2rem;

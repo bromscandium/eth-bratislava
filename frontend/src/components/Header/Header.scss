@@ -4,9 +4,18 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 0;
+    padding: 24px 32px;
     border-bottom: 1px solid rgba(243, 242, 245, 0.1);
     position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    gap: 1.5rem;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 20px;
+    }
 }
 
 .logo {
@@ -17,6 +26,7 @@ header {
     transition: color 0.2s;
     display: flex;
     align-items: center;
+    margin-right: 2rem; // ✅ добавлен отступ
 
     &:hover {
         color: $secondary;
@@ -79,10 +89,19 @@ nav ul {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
+    margin-left: 1.5rem; // ✅ добавлен лёгкий отступ
 
     &:hover {
         background-color: $secondary;
         color: $primary;
+    }
+
+    @media (max-width: 768px) {
+        margin-left: 0;
+        margin-top: 1rem;
+        align-self: stretch;
+        width: 100%;
+        text-align: center;
     }
 }
 
