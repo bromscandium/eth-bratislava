@@ -25,8 +25,6 @@ export default function Login() {
             if (!response.ok) throw new Error(data.detail || 'Login failed');
 
             localStorage.setItem('user', JSON.stringify(data.user));
-
-            // ✅ Переход только после успешного логина
             navigate('/profile');
         } catch (err) {
             setError(err.message);
@@ -69,6 +67,8 @@ export default function Login() {
                 <p className="login-footer-text">
                     Don’t have an account? <a href="/register">Register</a>
                 </p>
+
+                <button className="go-home-btn" onClick={() => navigate('/')}>Back to Home</button>
             </div>
         </div>
     );

@@ -1,4 +1,3 @@
-// src/pages/Marketplace/Marketplace.jsx
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Slider from 'rc-slider';
@@ -43,6 +42,28 @@ export default function Marketplace() {
     const [sortFilter, setSortFilter] = useState('az');
     const [priceRange, setPriceRange] = useState([minAllowed, maxAllowed]);
 
+    const [dropdownCountryOpen, setDropdownCountryOpen] = useState(false);
+    const [dropdownTypeOpen, setDropdownTypeOpen] = useState(false);
+    const [dropdownSortOpen, setDropdownSortOpen] = useState(false);
+
+    const toggleDropdownCountry = () => setDropdownCountryOpen(o => !o);
+    const toggleDropdownType = () => setDropdownTypeOpen(o => !o);
+    const toggleDropdownSort = () => setDropdownSortOpen(o => !o);
+
+    const getArrowClass = (open) => open ? 'arrow up' : 'arrow down';
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (!e.target.closest('.dropdown')) {
+                setDropdownCountryOpen(false);
+                setDropdownTypeOpen(false);
+                setDropdownSortOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
     return (
         <div className="marketplace-outer">
             <div className="marketplace-info">
@@ -54,15 +75,15 @@ export default function Marketplace() {
             </div>
 
             <div className="marketplace-layout container">
-                <aside className="marketplace-filters">
-                    {/* optional sidebar */}
-                </aside>
+                <aside className="marketplace-filters" />
 
                 <main className="marketplace-main">
                     <div className="filters">
-                        {/* search */}
+                        {/* Search */}
                         <div className="search-filter">
-                            <svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" >
+                                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
                             <input
                                 type="text"
                                 placeholder="Search by name"
@@ -71,7 +92,7 @@ export default function Marketplace() {
                             />
                         </div>
 
-                        {/* price slider */}
+                        {/* Price Slider */}
                         <div className="price-slider">
                             <label>Price range</label>
                             <Slider
@@ -88,38 +109,89 @@ export default function Marketplace() {
                             </div>
                         </div>
 
-                        {/* country */}
-                        <select
-                            className="dropdown-select"
-                            value={selectedCountry}
-                            onChange={e => setSelectedCountry(e.target.value)}
-                        >
-                            {countries.map(c => (
-                                <option key={c.key} value={c.key}>{c.label}</option>
-                            ))}
-                        </select>
+                        {/* Country Dropdown */}
+                        <div className="dropdown dropdown-country">
+                            <button
+                                type="button"
+                                className="dropdown-toggle"
+                                onClick={toggleDropdownCountry}
+                            >
+                                {countries.find(c => c.key === selectedCountry)?.label || 'Select Country'}
+                                <span className={getArrowClass(dropdownCountryOpen)} />
+                            </button>
+                            {dropdownCountryOpen && (
+                                <div className="dropdown-menu">
+                                    {countries.map(c => (
+                                        <div
+                                            key={c.key}
+                                            className={`dropdown-item ${selectedCountry === c.key ? 'active' : ''}`}
+                                            onClick={() => {
+                                                setSelectedCountry(c.key);
+                                                setDropdownCountryOpen(false);
+                                            }}
+                                        >
+                                            {c.label}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
 
-                        {/* type */}
-                        <select
-                            className="dropdown-select"
-                            value={selectedTag}
-                            onChange={e => setSelectedTag(e.target.value)}
-                        >
-                            {tagOptions.map(o => (
-                                <option key={o.value} value={o.value}>{o.label}</option>
-                            ))}
-                        </select>
+                        {/* Type Dropdown */}
+                        <div className="dropdown dropdown-type">
+                            <button
+                                type="button"
+                                className="dropdown-toggle"
+                                onClick={toggleDropdownType}
+                            >
+                                {tagOptions.find(o => o.value === selectedTag)?.label || 'Select Type'}
+                                <span className={getArrowClass(dropdownTypeOpen)} />
+                            </button>
+                            {dropdownTypeOpen && (
+                                <div className="dropdown-menu">
+                                    {tagOptions.map(o => (
+                                        <div
+                                            key={o.value}
+                                            className={`dropdown-item ${selectedTag === o.value ? 'active' : ''}`}
+                                            onClick={() => {
+                                                setSelectedTag(o.value);
+                                                setDropdownTypeOpen(false);
+                                            }}
+                                        >
+                                            {o.label}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
 
-                        {/* sort */}
-                        <select
-                            className="dropdown-select"
-                            value={sortFilter}
-                            onChange={e => setSortFilter(e.target.value)}
-                        >
-                            {sortOptions.map(o => (
-                                <option key={o.value} value={o.value}>{o.label}</option>
-                            ))}
-                        </select>
+                        {/* Sort Dropdown */}
+                        <div className="dropdown dropdown-sort">
+                            <button
+                                type="button"
+                                className="dropdown-toggle"
+                                onClick={toggleDropdownSort}
+                            >
+                                {sortOptions.find(o => o.value === sortFilter)?.label || 'Sort By'}
+                                <span className={getArrowClass(dropdownSortOpen)} />
+                            </button>
+                            {dropdownSortOpen && (
+                                <div className="dropdown-menu">
+                                    {sortOptions.map(o => (
+                                        <div
+                                            key={o.value}
+                                            className={`dropdown-item ${sortFilter === o.value ? 'active' : ''}`}
+                                            onClick={() => {
+                                                setSortFilter(o.value);
+                                                setDropdownSortOpen(false);
+                                            }}
+                                        >
+                                            {o.label}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     <PropertyList

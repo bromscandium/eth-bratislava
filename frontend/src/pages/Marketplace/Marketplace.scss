@@ -1,46 +1,48 @@
 @use '../../styles/variables' as *;
+@use "sass:color";
 
 .filters {
     display: flex;
     gap: 1rem;
     margin-bottom: 2rem;
-    align-items: stretch; // щоб діти тягнулися по висоті
+    flex-wrap: wrap;
+    align-items: stretch;
 
-    // всі прямі діти .filters (search, slider, selects) мають спільні налаштування
     > * {
-        flex: 1; // рівномірно ділять ширину
+        flex: 1;
         display: flex;
-        align-items: center; // вирівнюють контент по центру по вертикалі
-        padding: 0.5rem 1rem;
-        background: rgba(243, 242, 245, 0.05);
+        align-items: center;
+        padding: 0.75rem 1.25rem;
+        background: rgba(243, 242, 245, 0.04);
         border: 1px solid rgba(243, 242, 245, 0.1);
-        border-radius: 8px;
-        font-size: 0.9rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
         color: $white;
         box-sizing: border-box;
-        min-height: 3.5rem; // фіксована мінімальна висота всіх фільтрів
+        min-height: 3.5rem;
+        transition: all 0.25s ease;
     }
 }
 
-// shared control look
-.search-filter,
-.price-slider,
-.dropdown-select {
-    background: rgba(243, 242, 245, 0.05);
-    border: 1px solid rgba(243, 242, 245, 0.1);
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    color: $white;
-    font-size: 0.9rem;
-}
-
+// Search field
 .search-filter {
-    flex: 2; // пошук займає удвічі більше місця
+    flex: 2;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(243, 242, 245, 0.1);
+    border-radius: 10px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+
+    display: flex;
+    align-items: center;
+
     svg {
-        width: 1.4rem;
-        height: 1.4rem;
+        width: 2rem;
+        height: 2rem;
         margin-right: 0.75rem;
+        background: none;
         stroke: $gray;
+        transition: stroke 0.3s ease;
+        flex-shrink: 0;
     }
 
     input {
@@ -49,6 +51,7 @@
         border: none;
         color: $white;
         font-size: 1rem;
+        transition: color 0.3s ease;
 
         &:focus {
             outline: none;
@@ -58,22 +61,33 @@
             color: $gray;
         }
     }
+
+
+    &:focus-within {
+        border-color: $secondary;
+
+
+        svg {
+            stroke: $secondary;
+        }
+    }
 }
 
-// price-slider трохи менше "висить" зверху/знизу
+
+// Price slider
 .price-slider {
-    flex: 2; // слайдер трохи ширший
+    flex: 2;
     flex-direction: column;
     justify-content: center;
 
+
     label {
-        margin: 0 0 0.25rem;
         font-size: 0.9rem;
         color: $gray;
+        margin-bottom: 0.5rem;
     }
 
     .rc-slider {
-        flex: 1;
         margin: 0 0.5rem;
     }
 
@@ -81,57 +95,120 @@
         background-color: $secondary;
     }
 
+    .rc-slider-handle {
+        border-color: $secondary;
+    }
 
     .slider-values {
         font-size: 0.8rem;
         color: $gray;
         display: flex;
-        width: 100%;
         justify-content: space-between;
         margin-top: 0.25rem;
+        width: 100%;
     }
 }
 
-.dropdown-select {
-    appearance: none;
-    flex: 1;
-    padding: 0.5rem 2rem 0.5rem 1rem;
-    background: rgba(243, 242, 245, 0.05) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpolyline points='1 1 6 6 11 1' stroke='%23fff' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 1rem center;
-    background-size: 12px 8px;
-    border: none; // убираем рамку у селекта
-    border-radius: 8px;
-    color: $white;
-    font-size: 0.9rem;
-    cursor: pointer;
+// Dropdowns
+.dropdown {
+    position: relative;
+    width: 100%;
 
-    option {
-        font-family: $font-family;
-        background-color: #1b1724;
+    &:hover {
+        background: rgba($secondary, 0.15);
+    }
+
+    .dropdown-toggle {
+        background: transparent;
+        border: none;
         color: $white;
-        border: none; // убираем рамку у опции (насколько возможно)
-        padding: 0.5rem 1rem;
+        padding: 0.6rem 1rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        transition: all 0.2s ease;
+        cursor: pointer;
 
+        .arrow {
+            margin-left: 0.75rem;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid $white;
+            transition: transform 0.3s ease;
 
+            &.up {
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        width: 100%;
+        background: #170F19;
+        border: 1px solid rgba(243, 242, 245, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        z-index: 10;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        animation: fadeInDropdown 0.25s ease-out forwards;
+
+        .dropdown-item {
+            padding: 0.75rem 1.25rem;
+            cursor: pointer;
+            color: $white;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+
+            &:hover {
+                background: rgba($secondary, 0.12);
+            }
+
+            &.active {
+                background: rgba($secondary, 0.2);
+
+            }
+        }
     }
 }
 
+@keyframes fadeInDropdown {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
+// Intro section
 .marketplace-info {
     text-align: center;
     margin-top: 50px;
     margin-bottom: 60px;
 
     h2 {
-        font-size: 40px;
+        font-size: 2.5rem;
         font-weight: 700;
-        margin-bottom: 16px;
+        margin-bottom: 1rem;
+        color: $white;
     }
 
     .marketplace-description {
-        font-size: 18px;
+        font-size: 1.125rem;
         color: $gray;
-        max-width: 600px;
+        max-width: 640px;
         margin: 0 auto;
+        line-height: 1.6;
     }
 }
-

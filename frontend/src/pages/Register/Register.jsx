@@ -1,3 +1,4 @@
+// src/pages/Marketplace/Marketplace.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Register.scss';
@@ -109,6 +110,8 @@ export default function Register() {
                 <p className="register-footer-text">
                     Already have an account? <a href="/login">Login here</a>
                 </p>
+
+                <button className="go-home-btn" onClick={() => navigate('/')}>Back to Home</button>
             </div>
         </div>
     );

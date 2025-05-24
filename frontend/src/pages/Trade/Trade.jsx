@@ -25,7 +25,7 @@ const Trade = () => {
 
         const map = new maplibregl.Map({
             container: mapRef.current,
-            style: 'https://api.maptiler.com/maps/darkmatter/style.json?key=leLKcJqFrGkjyFiGlG7L',
+            style: 'https://api.maptiler.com/maps/streets-dark/style.json?key=leLKcJqFrGkjyFiGlG7L',
             center: property.coords,
             zoom: 12,
         });
@@ -70,7 +70,7 @@ const Trade = () => {
 
     return (
         <div className="trade-layout">
-            <canvas className="particles-js-canvas-el"></canvas>
+
 
             <div className="trade-card">
                 <button className="btn-back" onClick={() => navigate(-1)}>
@@ -110,7 +110,7 @@ const Trade = () => {
                     <p className="trade-description">{description}</p>
 
                     <button className="btn-buy">
-                        <DollarSign size={18} style={{ marginRight: '6px' }} />
+                        <DollarSign size={22} style={{ marginRight: '6px' }} />
                         Buy with USDC
                     </button>
 

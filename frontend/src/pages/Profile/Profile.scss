@@ -1,1 +1,332 @@
 @use '../../styles/variables' as *;
+
+.profile-page {
+    --primary: #0F0712;
+    --secondary: #B96BFC;
+    --white: #F3F2F5;
+    --gray: #C2C2C2;
+
+    background-color: var(--primary);
+    color: var(--white);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    min-height: 100vh;
+
+    .profile-page-wrapper {
+        padding: 2rem 1rem;
+
+        @media (min-width: 768px) {
+            padding: 2rem 3rem;
+        }
+        @media (min-width: 1200px) {
+            padding: 2rem 8rem;
+        }
+    }
+
+    .profile-page-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .profile-page-avatar-wrapper {
+        background: linear-gradient(135deg, #B96BFC, #6E34D1);
+        padding: 4px;
+        border-radius: 9999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 12px rgba(185, 107, 252, 0.3);
+        transition: box-shadow 0.2s ease;
+
+        &:hover {
+            box-shadow: 0 0 20px rgba(185, 107, 252, 0.5);
+        }
+    }
+
+    .profile-page-avatar {
+        background-color: var(--primary);
+        width: 120px;
+        height: 120px;
+        border-radius: 9999px;
+        font-size: 48px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+    }
+
+    .profile-page-info {
+        flex: 1;
+
+        h1 {
+            background: linear-gradient(to right, #B96BFC, #6E34D1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        p {
+            margin: 8px 0;
+            font-size: 0.95rem;
+            color: var(--gray);
+        }
+    }
+
+    .profile-page-wallet {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: monospace;
+        background: rgba(243, 242, 245, 0.05);
+        border-radius: 9999px;
+        padding: 8px 14px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.1s;
+        color: var(--white);
+        font-size: 14px;
+
+        &:hover {
+            background: rgba(185, 107, 252, 0.1);
+            transform: scale(1.02);
+        }
+
+        svg {
+            font-size: 16px;
+            color: var(--secondary);
+        }
+    }
+
+    .profile-page-dropdown {
+        position: relative;
+        margin-left: auto;
+
+        .profile-page-dropdown-toggle {
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--white);
+            padding: 8px 60px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+
+            &:hover {
+                background: var(--secondary);
+                color: var(--primary);
+            }
+        }
+
+        .profile-page-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(243, 242, 245, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            min-width: 180px;
+            overflow: hidden;
+            backdrop-filter: blur(8px);
+
+            .profile-page-dropdown-item {
+                padding: 12px 16px;
+                cursor: pointer;
+                transition: background 0.2s;
+                color: var(--white);
+                font-weight: 500;
+
+                &:hover {
+                    background: rgba(185, 107, 252, 0.1);
+                }
+
+                &.active {
+                    background: rgba(185, 107, 252, 0.2);
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+
+    .profile-page-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-bottom: 40px;
+
+        .profile-page-stat-card {
+            flex: 1 1 200px;
+            background: rgba(243, 242, 245, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(243, 242, 245, 0.05);
+            transition: 0.2s;
+
+            &:hover {
+                border-color: var(--secondary);
+                transform: translateY(-3px);
+            }
+
+            .profile-page-stat-icon {
+                font-size: 20px;
+                color: var(--secondary);
+                margin-bottom: 4px;
+            }
+
+            .profile-page-stat-value {
+                font-size: 24px;
+                color: var(--secondary);
+                font-weight: bold;
+            }
+
+            .profile-page-stat-label {
+                color: var(--gray);
+                font-size: 14px;
+            }
+        }
+    }
+
+    .profile-page-section-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 2rem 0 1rem;
+    }
+
+    .profile-page-properties-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 30px;
+    }
+
+    .profile-page-property-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(243, 242, 245, 0.05);
+        transition: all 0.2s;
+
+        &:hover {
+            border-color: var(--secondary);
+        }
+
+        .profile-page-property-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+
+            .profile-page-property-badge {
+                position: absolute;
+                top: 16px;
+                right: 16px;
+                background: var(--secondary);
+                color: var(--primary);
+                padding: 6px 12px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: bold;
+            }
+        }
+
+        .profile-page-property-details {
+            padding: 20px;
+
+            .profile-page-property-price {
+                font-size: 18px;
+                font-weight: bold;
+                color: var(--secondary);
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                margin-bottom: 8px;
+            }
+
+            .profile-page-property-title {
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: 6px;
+            }
+
+            .profile-page-property-location {
+                font-size: 14px;
+                color: var(--gray);
+                margin-bottom: 12px;
+            }
+
+            .profile-page-property-features {
+                display: flex;
+                justify-content: space-between;
+
+                .profile-page-feature {
+                    text-align: center;
+
+                    span:first-child {
+                        font-weight: bold;
+                        color: var(--white);
+                        display: block;
+                    }
+
+                    span:last-child {
+                        font-size: 12px;
+                        color: var(--gray);
+                    }
+                }
+            }
+        }
+    }
+
+    .wallet-toast-wrapper {
+        .wallet-toast {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: #0f0712;
+            color: var(--white);
+            border: 1px solid rgba(243, 242, 245, 0.1);
+            box-shadow: 0 0 14px rgba(185, 107, 252, 0.2);
+            font-size: 14px;
+            line-height: 1.4;
+
+            .wallet-toast-icon {
+                position: relative;
+                width: 22px;
+                height: 22px;
+
+                .lucide {
+                    position: relative;
+                    z-index: 1;
+                }
+            }
+
+            span {
+                display: block;
+                margin-left: 8px;
+            }
+        }
+    }
+
+    .fade-timer {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: radial-gradient(circle, #B96BFC 0%, transparent 60%);
+        animation: fadeHighlight 3s forwards;
+    }
+
+    @keyframes fadeHighlight {
+        0% {
+            background: radial-gradient(circle, #B96BFC 0%, transparent 60%);
+            opacity: 1;
+        }
+        100% {
+            background: radial-gradient(circle, #0F0712 0%, transparent 60%);
+            opacity: 0.2;
+        }
+    }
+}

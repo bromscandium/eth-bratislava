@@ -33,7 +33,6 @@
     font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 2rem;
-    color: var(--register-white);
 }
 
 .register-form-group {
@@ -75,6 +74,25 @@
 
     &:hover {
         opacity: 0.9;
+    }
+}
+
+.go-home-btn {
+    background: transparent;
+    border: 1px solid var(--register-secondary);
+    color: var(--register-white);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 2rem auto 0;
+
+    &:hover {
+        background-color: var(--register-secondary);
+        color: var(--register-primary);
     }
 }
 
