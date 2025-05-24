@@ -2,23 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Profile.scss';
 
-import { FaRegCopy, FaHome, FaMoneyBillWave, FaChartLine, FaTags } from 'react-icons/fa';
+import { FaRegCopy, FaHome, FaMoneyBillWave, FaChartLine, FaTags, FaEthereum } from 'react-icons/fa';
 import { ClipboardCheck } from 'lucide-react';
 import { toast } from 'react-toastify';
 
 const Profile = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [walletConnected, setWalletConnected] = useState(false);
+    const [walletAddress, setWalletAddress] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Получаем данные пользователя из localStorage
         const userData = JSON.parse(localStorage.getItem('user'));
         if (userData) {
+            const savedWallet = localStorage.getItem('walletAddress');
+            const wallet = savedWallet || userData.wallet || '';
+
             setUser({
                 ...userData,
-                // Добавляем дефолтные значения для свойств, которых может не быть в API
-                wallet: userData.wallet || '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+                wallet,
                 bio: userData.bio || 'Real estate investor',
                 owned: userData.owned || [],
                 listings: userData.listings || [],
@@ -26,15 +29,114 @@ const Profile = () => {
                 totalValue: userData.totalValue || 0,
                 initials: (userData.first_name?.[0] || '') + (userData.last_name?.[0] || '')
             });
+
+            if (savedWallet) {
+                setWalletAddress(savedWallet);
+                setWalletConnected(true);
+            }
         } else {
-            navigate('/login'); // Перенаправляем если пользователь не авторизован
+            navigate('/login');
         }
         setLoading(false);
-    }, [navigate]);
+
+        // Проверяем изменение аккаунтов в MetaMask
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    disconnectWallet();
+                } else if (walletConnected) {
+                    setWalletAddress(accounts[0]);
+                    localStorage.setItem('walletAddress', accounts[0]);
+                }
+            });
+        }
+
+        return () => {
+            if (window.ethereum) {
+                window.ethereum.removeListener('accountsChanged', () => {});
+            }
+        };
+    }, [navigate, walletConnected]);
+
+    const connectMetaMask = async () => {
+        if (!window.ethereum) {
+            toast.error(
+                <div>
+                    <strong>MetaMask not installed!</strong>
+                    <div>Please install the MetaMask extension.</div>
+                </div>,
+                { autoClose: 5000 }
+            );
+            return;
+        }
+
+        try {
+            // Проверяем сеть (пример для Ethereum Mainnet)
+            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+            if (chainId !== '0x1') {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: '0x1' }],
+                    });
+                } catch (switchError) {
+                    toast.error('Please switch to Ethereum Mainnet');
+                    return;
+                }
+            }
+
+            const accounts = await window.ethereum.request({
+                method: 'eth_requestAccounts'
+            });
+
+            const address = accounts[0];
+            setWalletAddress(address);
+            setWalletConnected(true);
+
+            localStorage.setItem('walletAddress', address);
+
+            const updatedUser = {
+                ...user,
+                wallet: address
+            };
+            setUser(updatedUser);
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+
+            toast.success(
+                <div>
+                    <strong>Wallet connected!</strong>
+                    <div>{`${address.substring(0, 6)}...${address.substring(address.length - 4)}`}</div>
+                </div>
+            );
+        } catch (error) {
+            toast.error(
+                <div>
+                    <strong>Connection failed</strong>
+                    <div>{error.message}</div>
+                </div>
+            );
+        }
+    };
+
+    const disconnectWallet = () => {
+        setWalletAddress('');
+        setWalletConnected(false);
+        localStorage.removeItem('walletAddress');
+
+        const updatedUser = {
+            ...user,
+            wallet: ''
+        };
+        setUser(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+
+        toast.info('Wallet disconnected');
+    };
 
     const copyToClipboard = () => {
-        if (!user) return;
+        if (!walletAddress) return;
 
+        navigator.clipboard.writeText(walletAddress);
         toast(
             <div className="wallet-toast">
                 <div className="wallet-toast-icon fade-timer">
@@ -42,7 +144,7 @@ const Profile = () => {
                 </div>
                 <span>
                     <strong>Wallet copied!</strong><br />
-                    {user.wallet}
+                    {`${walletAddress.substring(0, 6)}...${walletAddress.substring(walletAddress.length - 4)}`}
                 </span>
             </div>,
             {
@@ -54,12 +156,22 @@ const Profile = () => {
         );
     };
 
+    const formatWalletAddress = (address) => {
+        if (!address) return '';
+        return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+    };
+
     if (loading) {
-        return <div className="profile-page">Loading...</div>;
+        return (
+            <div className="profile-page loading">
+                <div className="loader"></div>
+                <p>Loading profile...</p>
+            </div>
+        );
     }
 
     if (!user) {
-        return null; // или redirect на login
+        return null;
     }
 
     return (
@@ -72,14 +184,41 @@ const Profile = () => {
                                 <div className="profile-page-avatar">
                                     {user.initials}
                                 </div>
+                                {walletConnected && (
+                                    <div className="wallet-badge">
+                                        <FaEthereum />
+                                    </div>
+                                )}
                             </div>
 
                             <div className="profile-page-info">
                                 <h1>{user.first_name} {user.last_name}</h1>
                                 <p>{user.bio}</p>
-                                <div className="profile-page-wallet" onClick={copyToClipboard}>
-                                    <span>{user.wallet}</span>
-                                    <FaRegCopy />
+
+                                <div className="wallet-section">
+                                    {walletConnected ? (
+                                        <div className="wallet-connected">
+                                            <div className="wallet-address" onClick={copyToClipboard}>
+                                                <FaEthereum className="eth-icon" />
+                                                <span>{formatWalletAddress(walletAddress)}</span>
+                                                <FaRegCopy className="copy-icon" />
+                                            </div>
+                                            <button
+                                                className="disconnect-wallet"
+                                                onClick={disconnectWallet}
+                                            >
+                                                Disconnect
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            className="connect-wallet"
+                                            onClick={connectMetaMask}
+                                        >
+                                            <FaEthereum className="eth-icon" />
+                                            Connect MetaMask
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -141,7 +280,15 @@ const Profile = () => {
                                 ))}
                             </div>
                         ) : (
-                            <p className="no-properties">You don't own any properties yet</p>
+                            <div className="no-items">
+                                <p>You don't own any properties yet</p>
+                                <button
+                                    className="browse-button"
+                                    onClick={() => navigate('/marketplace')}
+                                >
+                                    Browse Marketplace
+                                </button>
+                            </div>
                         )}
 
                         <h2 className="profile-page-section-title">Active Listings</h2>
@@ -178,15 +325,25 @@ const Profile = () => {
                                 ))}
                             </div>
                         ) : (
-                            <p className="no-properties">You don't have any active listings</p>
+                            <div className="no-items">
+                                <p>You don't have any active listings</p>
+                                {user.owned.length > 0 && (
+                                    <button
+                                        className="create-listing-button"
+                                        onClick={() => navigate('/create-listing')}
+                                    >
+                                        Create New Listing
+                                    </button>
+                                )}
+                            </div>
                         )}
 
                         <div
-                            className="floating-my-properties"
+                            className="floating-action-button"
                             onClick={() => navigate('/properties')}
                         >
-                            <span className="icon"></span>
-                            <span className="label">Add Properties</span>
+                            <span className="icon">+</span>
+                            <span className="label">Add Property</span>
                         </div>
                     </section>
                 </div>
