@@ -1,33 +1,63 @@
 import React, { useState } from 'react';
-import './Login.scss';
 import { useNavigate } from 'react-router-dom';
+import './Login.scss';
 
 export default function Login() {
     const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = async (e) => {
+    const handleChange = e => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+        if (error) setError('');
+    };
+
+    const handleSubmit = async e => {
         e.preventDefault();
+        setIsLoading(true);
         setError('');
 
         try {
-            const response = await fetch('/api/auth/login', {
+            const formDataToSend = new URLSearchParams();
+            formDataToSend.append('email', formData.email);
+            formDataToSend.append('password', formData.password);
+
+            const response = await fetch('http://localhost:8000/api/auth/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Accept': 'application/json',
                 },
-                body: new URLSearchParams({ email, password }),
+                body: formDataToSend,
+                credentials: 'include' // Для работы с сессиями
             });
 
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.detail || 'Login failed');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Login failed');
+            }
 
-            localStorage.setItem('user', JSON.stringify(data.user));
-            navigate('/profile');
+            const data = await response.json();
+
+            if (data.status === 'success') {
+                // Сохраняем минимальные данные пользователя в localStorage
+                localStorage.setItem('user', JSON.stringify(data.user));
+                // Перенаправляем на защищенную страницу
+                navigate(data.redirect || '/profile');
+            } else {
+                throw new Error(data.detail || 'Login failed');
+            }
+
         } catch (err) {
-            setError(err.message);
+            setError(err.message || 'Login error');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -35,16 +65,18 @@ export default function Login() {
         <div className="login-container">
             <div className="login-box">
                 <h2 className="login-title">Welcome Back</h2>
+
                 <form className="login-form" onSubmit={handleSubmit}>
                     <div className="login-form-group">
                         <label htmlFor="email">Email</label>
                         <input
                             id="email"
+                            name="email"
                             type="email"
-                            placeholder="you@example.com"
                             required
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
+                            placeholder="you@example.com"
+                            value={formData.email}
+                            onChange={handleChange}
                         />
                     </div>
 
@@ -52,23 +84,37 @@ export default function Login() {
                         <label htmlFor="password">Password</label>
                         <input
                             id="password"
+                            name="password"
                             type="password"
-                            placeholder="••••••••"
                             required
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
+                            placeholder="••••••••"
+                            value={formData.password}
+                            onChange={handleChange}
                         />
                     </div>
 
-                    <button className="login-submit" type="submit">Login</button>
+                    <button
+                        type="submit"
+                        className="login-submit"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Logging in...' : 'Login'}
+                    </button>
+
                     {error && <div className="login-error">{error}</div>}
                 </form>
 
                 <p className="login-footer-text">
-                    Don’t have an account? <a href="/register">Register</a>
+                    Don't have an account? <a href="/register">Register</a>
                 </p>
 
-                <button className="go-home-btn" onClick={() => navigate('/')}>Back to Home</button>
+                <button
+                    className="go-home-btn"
+                    onClick={() => navigate('/')}
+                    disabled={isLoading}
+                >
+                    Back to Home
+                </button>
             </div>
         </div>
     );
