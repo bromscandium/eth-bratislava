@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Profile.scss';
 
 import { FaRegCopy, FaHome, FaMoneyBillWave, FaChartLine, FaTags } from 'react-icons/fa';
@@ -10,6 +11,7 @@ import { users } from '../../data/profile';
 const Profile = () => {
     const [selectedUserIndex, setSelectedUserIndex] = useState(0);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const navigate = useNavigate();
 
     const user = users[selectedUserIndex];
 
@@ -21,13 +23,11 @@ const Profile = () => {
     };
 
     const copyToClipboard = () => {
-        console.log(`📝 Wallet: ${user.wallet}`);
         toast(
             <div className="wallet-toast">
                 <div className="wallet-toast-icon fade-timer">
                     <ClipboardCheck size={18} className="lucide" />
                 </div>
-
                 <span>
                     <strong>Wallet copied!</strong><br />
                     {user.wallet}
@@ -170,6 +170,14 @@ const Profile = () => {
                                     </div>
                                 </div>
                             ))}
+                        </div>
+
+                        <div
+                            className="floating-my-properties"
+                            onClick={() => navigate('/properties')}
+                        >
+                            <span className="icon"></span>
+                            <span className="label">Add Properties</span>
                         </div>
                     </section>
                 </div>

@@ -14,6 +14,7 @@ import Home from "./pages/Home/Home";
 import HowItWorks from "./pages/HowItWorks/HowItWorks";
 import Register from './pages/Register/Register';
 import "./styles/index.scss"
+import Properties from "./pages/Propform/Propform";
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -41,6 +42,9 @@ function AppLayout() {
                     <Route path="/result" element={<ResultBuying />} />
                     <Route path="/wallet" element={<WalletConnect />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
+                    <Route path="/properties" element={<Properties />} />
+
+
                 </Routes>
             </main>
 
