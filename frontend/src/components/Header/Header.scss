@@ -1,15 +1,15 @@
 @use '../../styles/variables' as *;
 
-header {
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 24px 32px;
     border-bottom: 1px solid rgba(243, 242, 245, 0.1);
-    position: relative;
     max-width: 1280px;
     margin: 0 auto;
     gap: 1.5rem;
+    flex-wrap: wrap;
 
     @media (max-width: 768px) {
         flex-direction: column;
@@ -23,10 +23,10 @@ header {
     font-weight: 700;
     color: $white;
     text-decoration: none;
-    transition: color 0.2s;
     display: flex;
     align-items: center;
-    margin-right: 2rem; // ✅ добавлен отступ
+    margin-right: 2rem;
+    transition: color 0.2s;
 
     &:hover {
         color: $secondary;
@@ -42,14 +42,16 @@ nav ul {
     display: flex;
     list-style: none;
     gap: 32px;
+    margin: 0;
+    padding: 0;
 
     li a {
         color: $gray;
         text-decoration: none;
         font-weight: 500;
-        transition: all 0.2s;
         position: relative;
         padding: 8px 0;
+        transition: all 0.2s;
 
         &:hover {
             color: $white;
@@ -80,7 +82,8 @@ nav ul {
     }
 }
 
-.login-button {
+.login-button,
+.logout-button {
     background-color: transparent;
     color: $white;
     border: 1px solid $secondary;
@@ -89,7 +92,6 @@ nav ul {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
-    margin-left: 1.5rem; // ✅ добавлен лёгкий отступ
 
     &:hover {
         background-color: $secondary;
@@ -97,10 +99,36 @@ nav ul {
     }
 
     @media (max-width: 768px) {
-        margin-left: 0;
-        margin-top: 1rem;
-        align-self: stretch;
         width: 100%;
+        text-align: center;
+        margin-top: 1rem;
+    }
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        margin-top: 1rem;
+    }
+}
+
+.profile-link {
+    color: $white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+
+    &:hover {
+        color: $secondary;
+    }
+
+    @media (max-width: 768px) {
         text-align: center;
     }
 }

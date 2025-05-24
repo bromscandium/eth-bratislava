@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Profile.scss';
 
@@ -6,23 +6,35 @@ import { FaRegCopy, FaHome, FaMoneyBillWave, FaChartLine, FaTags } from 'react-i
 import { ClipboardCheck } from 'lucide-react';
 import { toast } from 'react-toastify';
 
-import { users } from '../../data/profile';
-
 const Profile = () => {
-    const [selectedUserIndex, setSelectedUserIndex] = useState(0);
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    const user = users[selectedUserIndex];
-
-    const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-
-    const selectUser = (index) => {
-        setSelectedUserIndex(index);
-        setDropdownOpen(false);
-    };
+    useEffect(() => {
+        // Получаем данные пользователя из localStorage
+        const userData = JSON.parse(localStorage.getItem('user'));
+        if (userData) {
+            setUser({
+                ...userData,
+                // Добавляем дефолтные значения для свойств, которых может не быть в API
+                wallet: userData.wallet || '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+                bio: userData.bio || 'Real estate investor',
+                owned: userData.owned || [],
+                listings: userData.listings || [],
+                totalSpent: userData.totalSpent || 0,
+                totalValue: userData.totalValue || 0,
+                initials: (userData.first_name?.[0] || '') + (userData.last_name?.[0] || '')
+            });
+        } else {
+            navigate('/login'); // Перенаправляем если пользователь не авторизован
+        }
+        setLoading(false);
+    }, [navigate]);
 
     const copyToClipboard = () => {
+        if (!user) return;
+
         toast(
             <div className="wallet-toast">
                 <div className="wallet-toast-icon fade-timer">
@@ -42,6 +54,14 @@ const Profile = () => {
         );
     };
 
+    if (loading) {
+        return <div className="profile-page">Loading...</div>;
+    }
+
+    if (!user) {
+        return null; // или redirect на login
+    }
+
     return (
         <div className="profile-page">
             <div className="profile-page-wrapper">
@@ -55,31 +75,12 @@ const Profile = () => {
                             </div>
 
                             <div className="profile-page-info">
-                                <h1>{user.name}</h1>
+                                <h1>{user.first_name} {user.last_name}</h1>
                                 <p>{user.bio}</p>
                                 <div className="profile-page-wallet" onClick={copyToClipboard}>
                                     <span>{user.wallet}</span>
                                     <FaRegCopy />
                                 </div>
-                            </div>
-
-                            <div className="profile-page-dropdown">
-                                <button className="profile-page-dropdown-toggle" onClick={toggleDropdown}>
-                                    {user.name}
-                                </button>
-                                {dropdownOpen && (
-                                    <div className="profile-page-dropdown-menu">
-                                        {users.map((u, idx) => (
-                                            <div
-                                                key={idx}
-                                                className={`profile-page-dropdown-item ${selectedUserIndex === idx ? 'active' : ''}`}
-                                                onClick={() => selectUser(idx)}
-                                            >
-                                                {u.name}
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
                             </div>
                         </div>
 
@@ -107,70 +108,78 @@ const Profile = () => {
                         </div>
 
                         <h2 className="profile-page-section-title">My Properties</h2>
-                        <div className="profile-page-properties-grid">
-                            {user.owned.map((property) => (
-                                <div className="profile-page-property-card" key={property.id}>
-                                    <div className="profile-page-property-image" style={{ backgroundImage: `url(${property.image})` }}>
-                                        <div className="profile-page-property-badge owned">Owned</div>
-                                    </div>
-                                    <div className="profile-page-property-details">
-                                        <div className="profile-page-property-price">
-                                            <img src={property.currencyIcon} alt="USDC" width={16} />
-                                            {property.price}
+                        {user.owned.length > 0 ? (
+                            <div className="profile-page-properties-grid">
+                                {user.owned.map((property) => (
+                                    <div className="profile-page-property-card" key={property.id}>
+                                        <div className="profile-page-property-image" style={{ backgroundImage: `url(${property.image})` }}>
+                                            <div className="profile-page-property-badge owned">Owned</div>
                                         </div>
-                                        <h3 className="profile-page-property-title">{property.title}</h3>
-                                        <div className="profile-page-property-location">{property.location}</div>
-                                        <div className="profile-page-property-features">
-                                            <div className="profile-page-feature">
-                                                <span>{property.area}</span>
-                                                <span>Area</span>
+                                        <div className="profile-page-property-details">
+                                            <div className="profile-page-property-price">
+                                                <img src={property.currencyIcon} alt="USDC" width={16} />
+                                                {property.price}
                                             </div>
-                                            <div className="profile-page-feature">
-                                                <span>{property.beds}</span>
-                                                <span>Beds</span>
-                                            </div>
-                                            <div className="profile-page-feature">
-                                                <span>{property.bath}</span>
-                                                <span>Bath</span>
+                                            <h3 className="profile-page-property-title">{property.title}</h3>
+                                            <div className="profile-page-property-location">{property.location}</div>
+                                            <div className="profile-page-property-features">
+                                                <div className="profile-page-feature">
+                                                    <span>{property.area}</span>
+                                                    <span>Area</span>
+                                                </div>
+                                                <div className="profile-page-feature">
+                                                    <span>{property.beds}</span>
+                                                    <span>Beds</span>
+                                                </div>
+                                                <div className="profile-page-feature">
+                                                    <span>{property.bath}</span>
+                                                    <span>Bath</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="no-properties">You don't own any properties yet</p>
+                        )}
 
                         <h2 className="profile-page-section-title">Active Listings</h2>
-                        <div className="profile-page-properties-grid">
-                            {user.listings.map((listing) => (
-                                <div className="profile-page-property-card" key={listing.id}>
-                                    <div className="profile-page-property-image" style={{ backgroundImage: `url(${listing.image})` }}>
-                                        <div className="profile-page-property-badge">For Sale</div>
-                                    </div>
-                                    <div className="profile-page-property-details">
-                                        <div className="profile-page-property-price">
-                                            <img src={listing.currencyIcon} alt="USDC" width={16} />
-                                            {listing.price}
+                        {user.listings.length > 0 ? (
+                            <div className="profile-page-properties-grid">
+                                {user.listings.map((listing) => (
+                                    <div className="profile-page-property-card" key={listing.id}>
+                                        <div className="profile-page-property-image" style={{ backgroundImage: `url(${listing.image})` }}>
+                                            <div className="profile-page-property-badge">For Sale</div>
                                         </div>
-                                        <h3 className="profile-page-property-title">{listing.title}</h3>
-                                        <div className="profile-page-property-location">{listing.location}</div>
-                                        <div className="profile-page-property-features">
-                                            <div className="profile-page-feature">
-                                                <span>{listing.area}</span>
-                                                <span>Area</span>
+                                        <div className="profile-page-property-details">
+                                            <div className="profile-page-property-price">
+                                                <img src={listing.currencyIcon} alt="USDC" width={16} />
+                                                {listing.price}
                                             </div>
-                                            <div className="profile-page-feature">
-                                                <span>{listing.beds}</span>
-                                                <span>Beds</span>
-                                            </div>
-                                            <div className="profile-page-feature">
-                                                <span>{listing.bath}</span>
-                                                <span>Bath</span>
+                                            <h3 className="profile-page-property-title">{listing.title}</h3>
+                                            <div className="profile-page-property-location">{listing.location}</div>
+                                            <div className="profile-page-property-features">
+                                                <div className="profile-page-feature">
+                                                    <span>{listing.area}</span>
+                                                    <span>Area</span>
+                                                </div>
+                                                <div className="profile-page-feature">
+                                                    <span>{listing.beds}</span>
+                                                    <span>Beds</span>
+                                                </div>
+                                                <div className="profile-page-feature">
+                                                    <span>{listing.bath}</span>
+                                                    <span>Bath</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="no-properties">You don't have any active listings</p>
+                        )}
 
                         <div
                             className="floating-my-properties"

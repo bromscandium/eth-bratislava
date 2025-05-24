@@ -1,22 +1,16 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Request, Form
-from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
-from pydantic import BaseModel, EmailStr, Field
+from fastapi.responses import HTMLResponse, JSONResponse
 from datetime import datetime
 import asyncpg
 from starlette.middleware.sessions import SessionMiddleware
-import os
-import json
-from uuid import UUID
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 from passlib.context import CryptContext
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend import nft, market
-from backend.db.db import get_db, init_db, get_user, get_password_hash, json_serialize, authenticate_user, DATABASE_URL
-from backend.db.db_client import DBClient
+from backend.db.db import get_db, init_db, get_user, get_password_hash, json_serialize, authenticate_user
 
 load_dotenv()
 
