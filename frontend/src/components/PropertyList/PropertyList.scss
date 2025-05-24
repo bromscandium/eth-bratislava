@@ -1,0 +1,241 @@
+@use '../../styles/variables' as *;
+
+.properties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+
+
+
+.property-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+
+    background: rgba(255, 255, 255, 0.03); // полупрозрачный светлый фон
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(243, 242, 245, 0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        transform: translateY(-5px);
+        border-color: $secondary;
+        box-shadow: 0 10px 20px rgba($secondary, 0.15);
+    }
+}
+
+
+.property-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    flex-grow: 1;
+
+    .property-info {
+        flex-grow: 1;
+    }
+
+    .secondary-button2 {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 0.5rem;
+        border: 1px solid $secondary;
+        background: #0F0712;
+        color: $white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin-top: 1.5rem;
+        width: 100%;
+
+        &:hover {
+            background: $secondary;
+            color: #0f0f0f;
+            box-shadow: 0 0 10px rgba($secondary, 0.4);
+        }
+    }
+}
+
+
+.property-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.property-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(15, 7, 18, 0.8);
+    color: $white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    &.auction {
+        background: $secondary;
+        color: $primary;
+    }
+
+    svg,
+    img {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.property-details {
+    padding: 20px;
+}
+
+.property-price {
+    font-size: 18px;
+    font-weight: 600;
+    color: $secondary;
+    margin-bottom: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    img {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+.property-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: $white;
+}
+
+.property-location {
+    display: flex;
+    align-items: center;
+    color: $gray;
+    font-size: 13px;
+    margin-bottom: 16px;
+
+    svg {
+        margin-right: 6px;
+    }
+}
+
+.property-features {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid rgba(243, 242, 245, 0.1);
+    padding-top: 16px;
+}
+
+.feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .feature-value {
+        font-weight: 600;
+        color: $white;
+    }
+
+    .feature-label {
+        font-size: 12px;
+        color: $gray;
+    }
+}
+
+.auction-bid {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .bid-info {
+        font-size: 14px;
+        color: $gray;
+
+        strong {
+            color: $white;
+            font-weight: 600;
+        }
+    }
+}
+
+.secondary-button2 {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: 1px solid $secondary;
+    background: #0F0712;
+    color: $white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+
+    &:hover {
+        background: $secondary;
+        color: #0F0712;
+    }
+}
+
+
+.pagination-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background: rgba(15, 7, 18, 0.95); // почти черный, полупрозрачный
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+
+    button {
+        background: rgba(243, 242, 245, 0.05);
+        border: 1px solid rgba(243, 242, 245, 0.1);
+        color: $white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &.active {
+            background: $secondary;
+            color: $primary;
+        }
+
+        &:hover:not(:disabled) {
+            border-color: $secondary;
+        }
+
+        &:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .property-list-wrapper {
+            padding-bottom: 100px;
+        }
+
+    }
+}
+
+

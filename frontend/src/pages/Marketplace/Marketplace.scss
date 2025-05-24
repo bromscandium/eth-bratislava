@@ -1,0 +1,214 @@
+@use '../../styles/variables' as *;
+@use "sass:color";
+
+.filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    align-items: stretch;
+
+    > * {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1.25rem;
+        background: rgba(243, 242, 245, 0.04);
+        border: 1px solid rgba(243, 242, 245, 0.1);
+        border-radius: 10px;
+        font-size: 0.95rem;
+        color: $white;
+        box-sizing: border-box;
+        min-height: 3.5rem;
+        transition: all 0.25s ease;
+    }
+}
+
+// Search field
+.search-filter {
+    flex: 2;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(243, 242, 245, 0.1);
+    border-radius: 10px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+
+    display: flex;
+    align-items: center;
+
+    svg {
+        width: 2rem;
+        height: 2rem;
+        margin-right: 0.75rem;
+        background: none;
+        stroke: $gray;
+        transition: stroke 0.3s ease;
+        flex-shrink: 0;
+    }
+
+    input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: $white;
+        font-size: 1rem;
+        transition: color 0.3s ease;
+
+        &:focus {
+            outline: none;
+        }
+
+        &::placeholder {
+            color: $gray;
+        }
+    }
+
+
+    &:focus-within {
+        border-color: $secondary;
+
+
+        svg {
+            stroke: $secondary;
+        }
+    }
+}
+
+
+// Price slider
+.price-slider {
+    flex: 2;
+    flex-direction: column;
+    justify-content: center;
+
+
+    label {
+        font-size: 0.9rem;
+        color: $gray;
+        margin-bottom: 0.5rem;
+    }
+
+    .rc-slider {
+        margin: 0 0.5rem;
+    }
+
+    .rc-slider-track {
+        background-color: $secondary;
+    }
+
+    .rc-slider-handle {
+        border-color: $secondary;
+    }
+
+    .slider-values {
+        font-size: 0.8rem;
+        color: $gray;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.25rem;
+        width: 100%;
+    }
+}
+
+// Dropdowns
+.dropdown {
+    position: relative;
+    width: 100%;
+
+    &:hover {
+        background: rgba($secondary, 0.15);
+    }
+
+    .dropdown-toggle {
+        background: transparent;
+        border: none;
+        color: $white;
+        padding: 0.6rem 1rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        transition: all 0.2s ease;
+        cursor: pointer;
+
+        .arrow {
+            margin-left: 0.75rem;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid $white;
+            transition: transform 0.3s ease;
+
+            &.up {
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        width: 100%;
+        background: #170F19;
+        border: 1px solid rgba(243, 242, 245, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        z-index: 10;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        animation: fadeInDropdown 0.25s ease-out forwards;
+
+        .dropdown-item {
+            padding: 0.75rem 1.25rem;
+            cursor: pointer;
+            color: $white;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+
+            &:hover {
+                background: rgba($secondary, 0.12);
+            }
+
+            &.active {
+                background: rgba($secondary, 0.2);
+
+            }
+        }
+    }
+}
+
+@keyframes fadeInDropdown {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Intro section
+.marketplace-info {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 60px;
+
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: $white;
+    }
+
+    .marketplace-description {
+        font-size: 1.125rem;
+        color: $gray;
+        max-width: 640px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+}

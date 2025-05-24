@@ -1,0 +1,66 @@
+@use '../../styles/variables' as *;
+
+.features {
+    padding: 80px 0;
+    background: rgba(15, 7, 18, 0.8);
+    position: relative;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.feature-card {
+    background: rgba(243, 242, 245, 0.03);
+    border-radius: 16px;
+    padding: 32px;
+    transition: all 0.3s;
+    border: 1px solid rgba(243, 242, 245, 0.05);
+    @include hover-effect;
+
+    &:hover {
+        border-color: $secondary;
+        background: rgba(185, 107, 252, 0.05);
+    }
+
+    h3 {
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 16px;
+        color: $white;
+    }
+
+    p {
+        color: $gray;
+        line-height: 1.6;
+    }
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(185, 107, 252, 0.1);
+    border-radius: 12px;
+    @include flex-center;
+    margin-bottom: 24px;
+
+    svg {
+        width: 28px;
+        height: 28px;
+        color: $secondary;
+    }
+}
+
+@media (max-width: 1024px) {
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}

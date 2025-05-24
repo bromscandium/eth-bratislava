@@ -1,0 +1,112 @@
+@use '../../styles/variables' as *;
+
+.hero {
+    padding: 120px 0 80px;
+    text-align: center;
+    position: relative;
+
+    h1 {
+        font-size: 64px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        line-height: 1.1;
+
+        span {
+            color: $secondary;
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 5px;
+                left: 0;
+                width: 100%;
+                height: 8px;
+                background-color: rgba(185, 107, 252, 0.3);
+                z-index: -1;
+            }
+        }
+    }
+
+    p {
+        font-size: 20px;
+        color: $gray;
+        max-width: 700px;
+        margin: 0 auto 40px;
+        line-height: 1.6;
+    }
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 60px;
+}
+
+.ethereum-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(185, 107, 252, 0.1);
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-top: 20px;
+
+    svg {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        color: $secondary;
+    }
+
+    span {
+        font-size: 14px;
+        color: $secondary;
+        font-weight: 500;
+    }
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    margin-bottom: 80px;
+
+    .stat-item {
+        text-align: center;
+
+        .stat-number {
+            font-size: 40px;
+            font-weight: 700;
+            color: $secondary;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: $gray;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 48px;
+    }
+
+    .stats {
+        flex-direction: column;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        gap: 12px;
+    }
+}

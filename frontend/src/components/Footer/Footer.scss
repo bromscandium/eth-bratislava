@@ -1,0 +1,134 @@
+@use '../../styles/variables' as *;
+
+footer {
+    background: rgba(15, 7, 18, 0.95);
+    padding: 60px 24px 30px;
+    border-top: 1px solid rgba(243, 242, 245, 0.1);
+
+    .container {
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-about {
+    p {
+        color: $gray;
+        line-height: 1.7;
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+    }
+}
+
+.footer-logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: $white;
+    margin-bottom: 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+
+    span {
+        color: $secondary;
+        margin-left: 4px;
+    }
+}
+
+.social-links {
+    display: flex;
+    gap: 14px;
+    margin-top: 10px;
+
+    a {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(243, 242, 245, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $gray;
+        transition: all 0.3s;
+
+        &:hover {
+            color: $secondary;
+            background: rgba($secondary, 0.15);
+        }
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+}
+
+.footer-links {
+    h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: $white;
+        margin-bottom: 16px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+
+        li {
+            margin-bottom: 12px;
+
+            a {
+                color: $gray;
+                text-decoration: none;
+                font-size: 0.95rem;
+                transition: all 0.2s;
+
+                &:hover {
+                    color: $secondary;
+                    padding-left: 5px;
+                }
+            }
+        }
+    }
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(243, 242, 245, 0.1);
+    padding-top: 30px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: $gray;
+
+    a {
+        color: $gray;
+        text-decoration: none;
+        margin: 0 8px;
+        transition: color 0.2s;
+
+        &:hover {
+            color: $secondary;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-grid {
+        gap: 24px;
+    }
+
+    .footer-logo {
+        font-size: 20px;
+    }
+
+    .social-links {
+        justify-content: flex-start;
+    }
+}
