@@ -352,21 +352,42 @@ async def create_timed_auction(
 
     return {"status": "success", "tx_hash": tx_hash}
 
+
+@router.get("/place-bid", response_class=HTMLResponse)
+async def place_bid_form(request: Request, user=Depends(get_current_user)):
+    """
+    Render HTML form to place a bid on an auction via MetaMask.
+    """
+    return templates.TemplateResponse(
+        "place-bid.html",
+        {
+            "request": request,
+            "action_url": request.url.path,
+            "marketplace_address": MARKETPLACE_ADDRESS,
+            "marketplace_abi": MARKETPLACE_ABI,
+            "stablecoin_address": STABLECOIN_ADDRESS,
+            "erc20_abi": ERC20_ABI,
+            "rpc_url": INFURA_URL
+        }
+    )
+
 @router.post("/place-bid")
 async def place_bid(
-    request: PlaceBidRequest,
+    token_contract: str = Form(...),
+    token_id: int = Form(...),
+    amount: int = Form(...),
     user=Depends(get_current_user)
 ):
     """
     Розміщення ставки на аукціон.
-    Користувач має бути залогінений.
+    Користувач має бути залогованим.
     """
     api = get_marketplace_api()
     try:
         tx = api.place_bid(
-            request.token_contract,
-            request.token_id,
-            request.amount
+            token_contract,
+            token_id,
+            amount
         )
     except Exception as e:
         raise HTTPException(
@@ -377,7 +398,6 @@ async def place_bid(
         "status": "success",
         "tx_hash": tx["receipt"].transactionHash.hex()
     }
-
 @router.post("/settle-auction")
 async def settle_auction(
     request: SettleAuctionRequest,
