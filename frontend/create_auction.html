@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Create Timed Auction</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; }
+    form { max-width: 500px; margin: auto; }
+    label { display: block; margin-top: 1rem; }
+    input, button { width: 100%; padding: 0.5rem; margin-top: 0.25rem; }
+    fieldset { border: 1px solid #ccc; padding: 1rem; border-radius: 0.5rem; }
+    legend { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Create Timed Auction</h1>
+  <form action="{{ action_url }}" method="post" onsubmit="return convertTimestamps()">
+    <fieldset>
+      <legend>Auction Details</legend>
+      <label>Token Contract:
+        <input name="token_contract" type="text" required />
+      </label>
+      <label>Token ID:
+        <input name="token_id" type="number" required />
+      </label>
+      <label>Reserve Price:
+        <input name="reserve_price" type="number" required />
+      </label>
+      <label>Start Time:
+        <input id="start_time_input" type="datetime-local" required />
+      </label>
+      <label>End Time:
+        <input id="end_time_input" type="datetime-local" required />
+      </label>
+      <input type="hidden" name="start_time" id="start_time_unix" />
+      <input type="hidden" name="end_time" id="end_time_unix" />
+    </fieldset>
+    <button type="submit">Create Auction</button>
+  </form>
+
+  <script>
+    function convertTimestamps() {
+      const start = new Date(document.getElementById("start_time_input").value);
+      const end = new Date(document.getElementById("end_time_input").value);
+
+      if (start >= end) {
+        alert("End time must be after start time.");
+        return false;
+      }
+
+      document.getElementById("start_time_unix").value = Math.floor(start.getTime() / 1000);
+      document.getElementById("end_time_unix").value = Math.floor(end.getTime() / 1000);
+      return true;
+    }
+  </script>
+</body>
+</html>

@@ -5,6 +5,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 import asyncpg
+from starlette.middleware.sessions import SessionMiddleware
 import os
 import json
 from uuid import UUID
@@ -13,128 +14,13 @@ from dotenv import load_dotenv
 from passlib.context import CryptContext
 from fastapi.middleware.cors import CORSMiddleware
 
+from backend import nft, market
+from backend.db.db import get_db, init_db, get_user, get_password_hash, json_serialize, authenticate_user, DATABASE_URL
+from backend.db.db_client import DBClient
+
 load_dotenv()
 
-
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@84.32.59.3:5432/dEST")
-
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, UUID):
-            return str(obj)
-        if isinstance(obj, datetime):
-            return obj.isoformat()
-        return super().default(obj)
-
-
-def json_serialize(data):
-    return json.loads(json.dumps(data, cls=CustomJSONEncoder))
-
-
-class UserBase(BaseModel):
-    email: EmailStr
-    first_name: str = Field(..., min_length=1, max_length=50)
-    last_name: str = Field(..., min_length=1, max_length=50)
-
-
-class UserCreate(UserBase):
-    password: str = Field(..., min_length=8)
-
-
-class UserInDB(UserBase):
-    id: UUID
-    hashed_password: str
-    created_at: datetime
-    updated_at: datetime
-
-async def get_db():
-    conn = await asyncpg.connect(DATABASE_URL)
-    try:
-        yield conn
-    finally:
-        await conn.close()
-
-
-def verify_password(plain_password: str, hashed_password: str):
-    return pwd_context.verify(plain_password, hashed_password)
-
-
-def get_password_hash(password: str):
-    return pwd_context.hash(password)
-
-
-async def get_user(conn, email: str):
-    user_record = await conn.fetchrow("SELECT * FROM members WHERE email = $1", email)
-    if user_record:
-        return UserInDB(
-            id=user_record["id"],
-            email=user_record["email"],
-            first_name=user_record["first_name"],
-            last_name=user_record["last_name"],
-            hashed_password=user_record["password"],
-            created_at=user_record["created_at"],
-            updated_at=user_record["updated_at"]
-        )
-    return None
-
-
-async def authenticate_user(conn, email: str, password: str):
-    user = await get_user(conn, email)
-    if not user:
-        return False
-    if not verify_password(password, user.hashed_password):
-        return False
-    return user
-
-
-async def init_db():
-    conn = await asyncpg.connect(DATABASE_URL)
-    try:
-        await conn.execute("""
-                           CREATE TABLE IF NOT EXISTS members
-                           (
-                               id
-                               UUID
-                               PRIMARY
-                               KEY
-                               DEFAULT
-                               gen_random_uuid
-                           (
-                           ),
-                               first_name VARCHAR
-                           (
-                               50
-                           ) NOT NULL,
-                               last_name VARCHAR
-                           (
-                               50
-                           ) NOT NULL,
-                               email VARCHAR
-                           (
-                               255
-                           ) UNIQUE NOT NULL,
-                               password VARCHAR
-                           (
-                               255
-                           ) NOT NULL,
-                               created_at TIMESTAMP NOT NULL DEFAULT NOW
-                           (
-                           ),
-                               updated_at TIMESTAMP NOT NULL DEFAULT NOW
-                           (
-                           )
-                               );
-                           CREATE INDEX IF NOT EXISTS idx_members_email ON members(email);
-                           """)
-    except Exception as e:
-        print(f"Error creating database tables: {e}")
-    finally:
-        await conn.close()
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -145,6 +31,14 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
+    SessionMiddleware,
+    secret_key="asdfahdjfhjKJSHDFJHGSKDJHFGbwhjefqjhwdkhjfasdhfb",
+    session_cookie="session"
+)
+
+app.include_router(nft.router)
+app.include_router(market.router)
+app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
@@ -152,7 +46,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-templates = Jinja2Templates(directory="../frontend")
+templates = Jinja2Templates(directory="./frontend")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -177,14 +71,16 @@ async def home_page(request: Request):
 
 @app.post("/api/auth/register")
 async def register(
-        first_name: str = Form(...),
-        last_name: str = Form(...),
-        email: str = Form(...),
-        password: str = Form(...),
-        conn: asyncpg.Connection = Depends(get_db)
+    request: Request,
+    first_name: str = Form(...),
+    last_name: str = Form(...),
+    email: str = Form(...),
+    password: str = Form(...),
+    conn: asyncpg.Connection = Depends(get_db)
 ):
     try:
-        if await get_user(conn, email):
+        user = await get_user(conn, email)
+        if user:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Email already registered"
@@ -201,13 +97,15 @@ async def register(
             first_name, last_name, email, hashed_password
         )
 
+        user = await get_user(conn, email)
         response_data = {
             "status": "success",
             "redirect": "/login",
             "user": dict(new_user)
         }
-
-        return JSONResponse(content=json_serialize(response_data))
+        response = JSONResponse(content=json_serialize(response_data))
+        request.session["user_id"] = str(user.id)
+        return response
 
     except Exception as e:
         raise HTTPException(
@@ -229,7 +127,7 @@ async def login(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid email or password"
             )
-
+        request.session["user_id"] = str(user.id)
         response_data = {
             "status": "success",
             "redirect": "/home",
