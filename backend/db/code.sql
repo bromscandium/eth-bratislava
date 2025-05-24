@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS auction (
     ended_at TIMESTAMP NOT NULL,
     first_bid NUMERIC NOT NULL,
     last_bid NUMERIC,
-    address TEXT NOT NULL
+    address TEXT NOT NULL,
+    token_id INT NOT NULL
 );
 
 

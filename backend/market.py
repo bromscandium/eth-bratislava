@@ -309,50 +309,44 @@ async def create_auction_form(request: Request, user=Depends(get_current_user)):
     """
     Render HTML form to create a timed auction.
     """
-    return templates.TemplateResponse(
-        "create_auction.html",
-        {"request": request, "action_url": request.url.path}
-    )
+    return templates.TemplateResponse("create_auction.html", {
+        "request": request,
+        "action_url": request.url.path,
+        "marketplace_address": MARKETPLACE_ADDRESS,
+        "marketplace_abi": MARKETPLACE_ABI,
+        "rpc_url": INFURA_URL
+    })
 
 
 @router.post("/create-auction", status_code=201)
 async def create_timed_auction(
-    token_contract: str = Form(..., description="Адреса контракту токена"),
-    token_id: int = Form(..., description="ID токена для аукціону"),
-    reserve_price: int = Form(..., description="Резервна ціна (в найменших одиницях)"),
-    start_time: int = Form(..., description="Unix-час початку аукціону (в секундах)"),
-    end_time: int = Form(..., description="Unix-час завершення аукціону (в секундах)"),
+    token_contract: str = Form(...),
+    token_id: int       = Form(...),
+    reserve_price: int  = Form(...),
+    start_time: int     = Form(...),
+    end_time: int       = Form(...),
+    tx_hash: str        = Form(...),
     user=Depends(get_current_user)
 ):
     """
-    Створення аукціону з фіксованими часами (форм-дані).
+    Persist a MetaMask-signed auction into the DB.
     """
-    api = get_marketplace_api()
-    try:
-        tx = api.create_timed_auction(
-            token_contract,
-            token_id,
-            reserve_price,
-            start_time,
-            end_time
-        )
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"createTimedAuction failed: {e}"
-        )
+    # Ensure creator_id is a plain Python UUID or string
+    raw_id = getattr(user, 'id', None)
+    if raw_id is None:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, detail="User ID missing")
 
-    tx_hash = tx["receipt"].transactionHash.hex()
+    # Convert to string (psycopg2 can adapt str -> UUID column)
+    creator_id = str(raw_id)
 
-    # Persist to DB
-    creator_id = getattr(user, 'id', None)
     auction_data = {
-        "id_creator": creator_id,
+        "id_creator":   creator_id,
         "id_lastbuyer": None,
-        "ended_at": datetime.utcfromtimestamp(end_time),
-        "first_bid": reserve_price,
-        "last_bid": None,
-        "address": token_contract
+        "ended_at":     datetime.utcfromtimestamp(end_time),
+        "first_bid":    reserve_price,
+        "last_bid":     None,
+        "address":      token_contract,
+        "token_id":     token_id
     }
     DB_C.insert_auction(auction_data)
 
