@@ -32,6 +32,13 @@ Traditional real‑estate transactions are **slow, expensive and opaque**.  Buye
 
 ---
 
+## Smart Contracts (Sepolia)
+
+* 🏠 **Marketplace** – [0x862c9a6137035a06562b8d6e29f41627b0165cfa](https://sepolia.etherscan.io/address/0x862c9a6137035a06562b8d6e29f41627b0165cfa)
+* 🧾 **PropertyNFT** – [0x766e0d3a4052302900356ac396b4d6b7c0621baf](https://sepolia.etherscan.io/address/0x766e0d3a4052302900356ac396b4d6b7c0621baf)
+
+---
+
 ## Project Structure
 
 ```
